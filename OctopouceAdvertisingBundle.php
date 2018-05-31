@@ -8,6 +8,6 @@ namespace Octopouce\AdvertisingBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class AdvertisingBundle extends Bundle {
+class OctopouceAdvertisingBundle extends Bundle {
 
 }

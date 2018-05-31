@@ -4,16 +4,16 @@
  * Date: 30/05/2018
  */
 
-namespace Octopouce\AdvertisingBundle\Controller\Admin;
+namespace Octopouce\AdvertisingBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends Controller
 {
 	/**
-	 * @Route("/", name="octo_adv_admin_dashboard_index")
+	 * @Route("/adv", name="octopouce_advertising_index")
 	 */
 	public function index(): Response
 	{

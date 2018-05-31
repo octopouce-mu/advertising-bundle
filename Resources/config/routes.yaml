@@ -1,4 +1,0 @@
-octo_adv_admin_controllers:
-    resource: '../../Controller/Admin'
-    type: annotation
-    prefix: /admin/advertising
