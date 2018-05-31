@@ -1,0 +1,23 @@
+{
+  "name": "octopouce-mu/advertising-bundle",
+  "type": "symfony-bundle",
+  "description": "Advertising bundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name":     "Kevin Hilairet",
+      "homepage": "kevin@octopouce.mu"
+    },
+    {
+      "name":     "Octopouce",
+      "homepage": "http://www.octopouce.mu"
+    }
+  ],
+  "require": {
+    "php": "^7.1.3",
+    "symfony/framework-bundle": "^4.0"
+  },
+  "autoload": {
+    "psr-4": { "Octopouce\\AdvertisingBundle\\": "" }
+  }
+}
