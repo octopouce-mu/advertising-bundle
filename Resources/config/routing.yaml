@@ -1,0 +1,3 @@
+octopouce_advertising_dashboard_index:
+    path:     /adv
+    defaults: { _controller: octopouce.advertising.dashboard_controller::index }

@@ -32,7 +32,7 @@ class Configuration implements ConfigurationInterface {
 			->children()
 				->arrayNode('advertising')
 					->children()
-						->booleanNode('enabled')->defaultFalse()->treatNullLike(false)->end()
+						->booleanNode('enabled')->defaultTrue()->treatNullLike(true)->end()
 					->end()
 				->end()
 			->end()

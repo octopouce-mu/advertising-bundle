@@ -18,14 +18,5 @@ class OctopouceAdvertisingExtension extends Extension
 	{
 		$loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 		$loader->load('services.yaml');
-
-
-		$this->addAnnotatedClassesToCompile(array(
-			'Octopouce\\AdvertisingBundle\\Controller\\DashboardController',
-			// ... but glob patterns are also supported:
-			'**Bundle\\Controller\\',
-
-			// ...
-		));
 	}
 }
