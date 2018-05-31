@@ -1,7 +1,7 @@
 parameters:
-    octopouce.advertising.dashboard_controller.class: Octopouce\AdvertisingBundle\Controller\DashboardController
+    octopouce.advertising.admin.dashboard_controller.class: Octopouce\AdvertisingBundle\Controller\Admin\DashboardController
 
 services:
-    octopouce.advertising.dashboard_controller:
-        class:   "%octopouce.advertising.dashboard_controller.class%"
+    octopouce.advertising.admin.dashboard_controller:
+        class:   "%octopouce.advertising.admin.dashboard_controller.class%"
         public:  true

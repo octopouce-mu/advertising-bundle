@@ -1,3 +1,4 @@
-octopouce_advertising_dashboard_index:
-    path:     /adv
-    defaults: { _controller: octopouce.advertising.dashboard_controller::index }
+octopouce_advertising_admin:
+    resource: '../../Controller/Admin'
+    type: annotation
+    prefix: /admin/advertising

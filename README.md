@@ -14,19 +14,23 @@ This version of the bundle requires Symfony Flex.
 ### Step 1: Download AdvertisingBundle using composer
 This library is available on [Packagist](http://packagist.org/packages/octopouce-mu/advertising-bundle).
 
-Add the following to your `composer.json`:
-
 ```js
-"require": {
-    ...
-    "octopouce-mu/advertising-bundle": "dev-master"
-    ...
-}
-```
-
-And run 
-``` bash
-$ php composer.phar install
+composer require octopouce-mu/avertising-bundle
 ```
 
 Composer will install the bundle to your project's `vendor/` directory.
+
+### Step 2: Update database
+
+```js
+php bin/console doctrine:schema:update --force
+```
+
+### Step 3: Import Octopouce Advertising routing file
+Now that you have activated and configured the bundle, all that is left to do is import the routing files.
+```js
+# config/routes/octopouce.yaml
+
+_octopouce_advertising:
+    resource: "@OctopouceAdvertisingBundle/Resources/config/routing.yaml"
+```
