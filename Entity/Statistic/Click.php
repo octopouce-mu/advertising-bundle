@@ -4,7 +4,6 @@ namespace Octopouce\AdvertisingBundle\Entity\Statistic;
 
 use Doctrine\ORM\Mapping as ORM;
 
-use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * Click
@@ -14,7 +13,6 @@ use Knp\DoctrineBehaviors\Model as ORMBehaviors;
  */
 class Click
 {
-	use ORMBehaviors\Timestampable\Timestampable;
 	/**
 	 * @var int
 	 *

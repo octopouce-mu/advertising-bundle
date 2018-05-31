@@ -6,8 +6,11 @@
 
 namespace Octopouce\AdvertisingBundle\Controller\Admin;
 
+use Octopouce\AdvertisingBundle\Entity\Adzone;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
 
 class DashboardController extends Controller
 {
@@ -16,6 +19,9 @@ class DashboardController extends Controller
 	 */
 	public function index(): Response
 	{
-		return $this->render('@OctopouceAdvertising/Dashboard/index.html.twig');
+		$em = $this->getDoctrine()->getManager();
+		$adzones = $em->getRepository(Adzone::class)->findAll();
+		var_dump($adzones[0]);die;
+		return $this->render('@OctopouceAdvertising/Admin/Dashboard/index.html.twig');
 	}
 }

@@ -1,7 +1,12 @@
 parameters:
     octopouce.advertising.admin.dashboard_controller.class: Octopouce\AdvertisingBundle\Controller\Admin\DashboardController
+    octopouce.advertising.repository.adzone.class: Octopouce\AdvertisingBundle\Repository\AdzoneRepository
 
 services:
     octopouce.advertising.admin.dashboard_controller:
         class:   "%octopouce.advertising.admin.dashboard_controller.class%"
         public:  true
+
+    octopouce.advertising.admin.dashboard_controller:
+        class:   "%octopouce.advertising.repository.adzone.class%"
+        tag:  ['doctrine.repository_service']
