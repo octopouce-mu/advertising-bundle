@@ -7,6 +7,13 @@ services:
         class:   "%octopouce.advertising.admin.dashboard_controller.class%"
         public:  true
 
-    octopouce.advertising.admin.dashboard_controller:
+    octopouce.advertising.repository.adzone:
         class:   "%octopouce.advertising.repository.adzone.class%"
-        tag:  ['doctrine.repository_service']
+        autowire: true
+        tags:  ['doctrine.repository_service']
+
+    Octopouce\AdvertisingBundle:
+        resource: '../../{Controller,Repository}'
+        autowire: true
+        autoconfigure: true
+        public: true
