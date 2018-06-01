@@ -6,6 +6,7 @@
 
 namespace Octopouce\AdvertisingBundle\Controller\Admin;
 
+use Octopouce\AdvertisingBundle\Entity\Advert;
 use Octopouce\AdvertisingBundle\Entity\Adzone;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +22,17 @@ class DashboardController extends Controller
 	{
 		$em = $this->getDoctrine()->getManager();
 		$adzones = $em->getRepository(Adzone::class)->findAll();
-		var_dump($adzones[0]);die;
-		return $this->render('@OctopouceAdvertising/Admin/Dashboard/index.html.twig');
+		uasort($adzones, function($a, $b){
+			if ($a->getTotalViews() == $b->getTotalViews()) return 0;
+			return ($a->getTotalViews() > $b->getTotalViews()) ? -1 : 1;
+		});
+
+		$adverts = $em->getRepository(Advert::class)->findByActive(['c.startDate'=>'ASC']);
+
+
+		return $this->render('@OctopouceAdvertising/Admin/Dashboard/index.html.twig', [
+			'adzones' => $adzones,
+			'adverts' => $adverts
+		]);
 	}
 }

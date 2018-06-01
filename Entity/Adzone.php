@@ -66,11 +66,6 @@ class Adzone
 	 */
 	private $statsView;
 
-	/**
-	 * @var integer
-	 */
-	private $totalViews;
-
 
 	public function __construct() {
 		$this->adverts = new ArrayCollection();

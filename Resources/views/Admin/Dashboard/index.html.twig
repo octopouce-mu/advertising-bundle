@@ -30,22 +30,48 @@
 
             <div class="col s6 m6 l3">
                 <div class="box">
-                    <div class="title">Date</div>
+                    <div class="title">Statistic of day</div>
                     <div class="content">
-                        2
+                        {{ 'now'|date('d/m/Y') }}
                     </div>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col s12">Adzones</div>
+            <div class="col s12">Adzones (by popularity)</div>
 
-            <div class="col s6 m6 l3">
-                <div class="box">
-                    <div class="title">Clicks</div>
-                    <div class="content">
-                        2
+            {% for adzone in adzones|slice(0, 5) %}
+                <div class="col s6 m6 l2">
+                    <div class="box">
+                        <div class="title">{{ adzone.name }}</div>
+                        <div class="content">
+                            {{ adzone.totalViews }}
+                        </div>
                     </div>
+                </div>
+            {% endfor %}
+            <div class="col s6 m6 l2">
+                <div class="box">
+                    <div class="title">All adzones</div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">Adverts actifs</div>
+
+            {% for advert in adverts %}
+                <div class="col s6 m6 l2">
+                    <div class="box">
+                        <div class="title">{{ adzone.name }}</div>
+                        <div class="content">
+                            {{ adzone.totalViews }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="col s6 m6 l2">
+                <div class="box">
+                    <div class="title">All adverts</div>
                 </div>
             </div>
         </div>

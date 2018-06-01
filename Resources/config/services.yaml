@@ -1,19 +1,18 @@
 parameters:
-    octopouce.advertising.admin.dashboard_controller.class: Octopouce\AdvertisingBundle\Controller\Admin\DashboardController
+    octopouce.advertising.repository.advert.class: Octopouce\AdvertisingBundle\Repository\AdvertRepository
     octopouce.advertising.repository.adzone.class: Octopouce\AdvertisingBundle\Repository\AdzoneRepository
 
 services:
-    octopouce.advertising.admin.dashboard_controller:
-        class:   "%octopouce.advertising.admin.dashboard_controller.class%"
-        public:  true
-
-    octopouce.advertising.repository.adzone:
-        class:   "%octopouce.advertising.repository.adzone.class%"
-        autowire: true
-        tags:  ['doctrine.repository_service']
-
-    Octopouce\AdvertisingBundle:
+    Octopouce\AdvertisingBundle\:
         resource: '../../{Controller,Repository}'
         autowire: true
         autoconfigure: true
         public: true
+
+    octopouce.advertising.repository.advert:
+        class: "%octopouce.advertising.repository.advert.class%"
+        tags:  ['doctrine.repository_service']
+
+    octopouce.advertising.repository.adzone:
+        class: "%octopouce.advertising.repository.adzone.class%"
+        tags:  ['doctrine.repository_service']
