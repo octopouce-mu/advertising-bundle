@@ -45,7 +45,7 @@
                     <div class="box">
                         <div class="title">{{ adzone.name }}</div>
                         <div class="content">
-                            {{ adzone.totalViews }}
+                            {{ adzone.totalViews }} view(s)
                         </div>
                     </div>
                 </div>
@@ -62,9 +62,10 @@
             {% for advert in adverts %}
                 <div class="col s6 m6 l2">
                     <div class="box">
-                        <div class="title">{{ adzone.name }}</div>
+                        <div class="bg-img" style="background-image: url('{{ asset(advert.imagePath) }}'); background-size: cover; width: 100%; height: 100%;position: absolute; opacity: .2;"></div>
+                        <div class="title">{{ advert.name }} - End to {{ advert.campaign.endDate|date('d/m/y') }}</div>
                         <div class="content">
-                            {{ adzone.totalViews }}
+                            {{ advert.totalViews }} view(s) | {{ advert.totalClicks }} click(s)
                         </div>
                     </div>
                 </div>

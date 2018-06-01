@@ -14,11 +14,11 @@ class AdvertRepository extends ServiceEntityRepository
 		parent::__construct($registry, Advert::class);
 	}
 
-	public function findByActive($sorts = null){
+	public function findByActive($sorts = null, $limit = null){
 		$qb = $this->createQueryBuilder('a')
 		           ->leftJoin('a.campaign', 'c')
 		           ->where('c.endDate > :now')
-					->setParameter('now', new \DateTime());
+		           ->setParameter('now', new \DateTime());
 
 		if($sorts){
 			foreach ($sorts as $sort => $order){
@@ -26,6 +26,9 @@ class AdvertRepository extends ServiceEntityRepository
 			}
 		}
 
+		if($limit){
+			$qb->getMaxResults($limit);
+		}
 
 		return $qb->getQuery()->getResult();
 	}

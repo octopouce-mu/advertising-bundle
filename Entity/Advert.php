@@ -143,6 +143,40 @@ class Advert
 	}
 
 	/**
+	 * Get totalViews
+	 *
+	 * @return int
+	 */
+	public function getTotalViews()
+	{
+		$total = 0;
+		$views = $this->getStatsView();
+
+		foreach ($views as $view){
+			$total += $view->getViews();
+		}
+
+		return $total;
+	}
+
+	/**
+	 * Get totalClicks
+	 *
+	 * @return int
+	 */
+	public function getTotalClicks()
+	{
+		$total = 0;
+		$clicks = $this->getStatsClick();
+
+		foreach ($clicks as $click){
+			$total += $click->getClick();
+		}
+
+		return $total;
+	}
+
+	/**
 	 * Get id
 	 *
 	 * @return int

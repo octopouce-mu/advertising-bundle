@@ -27,8 +27,7 @@ class DashboardController extends Controller
 			return ($a->getTotalViews() > $b->getTotalViews()) ? -1 : 1;
 		});
 
-		$adverts = $em->getRepository(Advert::class)->findByActive(['c.startDate'=>'ASC']);
-
+		$adverts = $em->getRepository(Advert::class)->findByActive(['c.startDate'=>'ASC'], 5);
 
 		return $this->render('@OctopouceAdvertising/Admin/Dashboard/index.html.twig', [
 			'adzones' => $adzones,

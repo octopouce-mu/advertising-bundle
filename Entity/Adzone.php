@@ -72,6 +72,22 @@ class Adzone
 		$this->pages = new ArrayCollection();
 	}
 
+	/**
+	 * Get totalViews
+	 *
+	 * @return int
+	 */
+	public function getTotalViews()
+	{
+		$total = 0;
+		$views = $this->getStatsView();
+
+		foreach ($views as $view){
+			$total += $view->getViews();
+		}
+
+		return $total;
+	}
 
 	/**
 	 * Get id
@@ -129,23 +145,6 @@ class Adzone
 	public function getHeight()
 	{
 		return $this->height;
-	}
-
-	/**
-	 * Get totalViews
-	 *
-	 * @return int
-	 */
-	public function getTotalViews()
-	{
-		$total = 0;
-		$views = $this->getStatsView();
-
-		foreach ($views as $view){
-			$total += $view->getViews();
-		}
-
-		return $total;
 	}
 
 	/**
@@ -276,6 +275,4 @@ class Adzone
 	{
 		return $this->statsView;
 	}
-
-
 }
