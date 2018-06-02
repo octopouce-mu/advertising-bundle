@@ -4,21 +4,19 @@ namespace Octopouce\AdvertisingBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\Query;
-use Octopouce\AdvertisingBundle\Entity\Advert;
+use Octopouce\AdvertisingBundle\Entity\Campaign;
 
-class AdvertRepository extends ServiceEntityRepository
+class CampaignRepository extends ServiceEntityRepository
 {
 	public function __construct(ManagerRegistry $registry)
 	{
-		parent::__construct($registry, Advert::class);
+		parent::__construct($registry, Campaign::class);
 	}
 
-	public function findByActive($active = true, $sorts = null, $limit = null){
-		$qb = $this->createQueryBuilder('a')
-		           ->leftJoin('a.campaign', 'c');
+	public function findByEnable($enable = true, $sorts = null, $limit = null){
+		$qb = $this->createQueryBuilder('c');
 
-		if($active){
+		if($enable){
 			$qb->where('c.endDate > :now')
 			   ->setParameter('now', new \DateTime());
 		}else{

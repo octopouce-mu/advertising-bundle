@@ -1,6 +1,7 @@
 parameters:
     octopouce.advertising.repository.advert.class: Octopouce\AdvertisingBundle\Repository\AdvertRepository
     octopouce.advertising.repository.adzone.class: Octopouce\AdvertisingBundle\Repository\AdzoneRepository
+    octopouce.advertising.repository.campaign.class: Octopouce\AdvertisingBundle\Repository\CampaignRepository
 
 services:
     Octopouce\AdvertisingBundle\:
@@ -15,4 +16,8 @@ services:
 
     octopouce.advertising.repository.adzone:
         class: "%octopouce.advertising.repository.adzone.class%"
+        tags:  ['doctrine.repository_service']
+
+    octopouce.advertising.repository.campaign:
+        class: "%octopouce.advertising.repository.campaign.class%"
         tags:  ['doctrine.repository_service']

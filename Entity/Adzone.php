@@ -275,4 +275,6 @@ class Adzone
 	{
 		return $this->statsView;
 	}
+
+
 }
