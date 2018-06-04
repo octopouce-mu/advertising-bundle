@@ -5,7 +5,7 @@ parameters:
 
 services:
     Octopouce\AdvertisingBundle\:
-        resource: '../../{Controller,Repository}'
+        resource: '../../{Controller,Repository,Service}'
         autowire: true
         autoconfigure: true
         public: true
@@ -21,3 +21,7 @@ services:
     octopouce.advertising.repository.campaign:
         class: "%octopouce.advertising.repository.campaign.class%"
         tags:  ['doctrine.repository_service']
+
+    Octopouce\AdvertisingBundle\Service\FileUploader:
+        arguments:
+            $targetDirectory: '%kernel.project_dir%/public/uploads'

@@ -1,0 +1,21 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block main %}
+    <section class="padding-filter">
+        <div class="row title">
+            <div class="col s12">
+                <h1>
+                    Advert : {{ advert.name }}
+                    {% if advert.campaign.endDate|date('U') > 'now'|date('U') %}
+                        <a href="{{ path('octopouce_advertising_admin_advert_edit', {'advert':advert.id}) }}" class="waves-effect waves-light btn orange"><i class="fas fa-pencil-alt"></i></a>
+                        <a href="{{ path('octopouce_advertising_admin_advert_delete', {'advert':advert.id}) }}" class="waves-effect waves-light btn red"><i class="fas fa-times"></i></a>
+                    {% endif %}
+                    <span class="right">{{ advert.campaign.startDate|date('d/m/Y') }} - {{ advert.campaign.endDate|date('d/m/Y') }}</span>
+                </h1>
+            </div>
+        </div>
+        <div class="row">
+
+        </div>
+    </section>
+{% endblock %}

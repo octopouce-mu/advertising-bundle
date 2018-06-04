@@ -7,6 +7,8 @@
 namespace Octopouce\AdvertisingBundle\Controller\Admin;
 
 use Octopouce\AdvertisingBundle\Entity\Campaign;
+use Octopouce\AdvertisingBundle\Entity\Page;
+use Octopouce\AdvertisingBundle\Form\CampaignType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,11 +33,16 @@ class CampaignController extends Controller
 	}
 
 	/**
-	 * @Route("/{campaign}", name="octopouce_advertising_admin_campaign_show")
+	 * @Route("/{campaign}/show", name="octopouce_advertising_admin_campaign_show")
 	 */
 	public function show(Campaign $campaign) : Response {
+		$em = $this->getDoctrine()->getManager();
+
+		$pages = $em->getRepository(Page::class)->findAll();
+
 		return $this->render('@OctopouceAdvertising/Admin/Campaign/show.html.twig', [
-			'campaign' => $campaign
+			'campaign' => $campaign,
+			'pages'    => $pages
 		]);
 	}
 
@@ -55,11 +62,12 @@ class CampaignController extends Controller
 
 			$this->addFlash('success', 'campaign.created');
 
-			return $this->redirectToRoute('octopouce_advertising_admin_campaign_index');
+			return $this->redirectToRoute('octopouce_advertising_admin_campaign_show', ['campaign' => $campaign->getId()]);
 		}
 
 		return $this->render('@OctopouceAdvertising/Admin/Campaign/create.html.twig', [
-			'campaign' => $campaign
+			'campaign' => $campaign,
+			'form' => $form->createView()
 		]);
 	}
 
@@ -79,7 +87,8 @@ class CampaignController extends Controller
 		}
 
 		return $this->render('@OctopouceAdvertising/Admin/Campaign/edit.html.twig', [
-			'campaign' => $campaign
+			'campaign' => $campaign,
+			'form' => $form->createView()
 		]);
 	}
 

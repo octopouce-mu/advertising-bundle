@@ -12,6 +12,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CampaignType extends AbstractType
 {
@@ -30,8 +32,7 @@ class CampaignType extends AbstractType
 			->add('endDate', DateTimePickerType::class, [
 				'date_widget' => 'single_text',
 				'time_widget' => 'single_text',
-				'attr' => ['class' => 'datepicker'],
-				'required' => false
+				'attr' => ['class' => 'datepicker']
 			])
 
 			->add('submit', SubmitType::class, [

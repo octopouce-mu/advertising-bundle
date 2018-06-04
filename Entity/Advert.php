@@ -32,30 +32,30 @@ class Advert
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(name="image_path", type="string", length=255)
+	 * @ORM\Column(name="link", type="string", length=255)
 	 */
-	private $imagePath;
+	private $link;
 
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(name="ad_link", type="string", length=255)
+	 * @ORM\Column(name="image_desktop", type="string", length=255)
 	 */
-	private $advertLink;
+	private $imageDesktop;
 
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(name="image_tablet_path", type="string", length=255)
+	 * @ORM\Column(name="image_tablet", type="string", length=255)
 	 */
-	private $imageTabletPath;
+	private $imageTablet;
 
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(name="image_mobile_path", type="string", length=255)
+	 * @ORM\Column(name="image_mobile", type="string", length=255)
 	 */
-	private $imageMobilePath;
+	private $imageMobile;
 
 	/**
 	 * @var bool
@@ -211,39 +211,39 @@ class Advert
 	}
 
 	/**
-	 * Set imagePath
+	 * Set imageDesktop
 	 *
-	 * @param string $imagePath
+	 * @param string $imageDesktop
 	 *
 	 * @return Advert
 	 */
-	public function setImagePath($imagePath)
+	public function setImageDesktop($imageDesktop)
 	{
-		$this->imagePath = $imagePath;
+		$this->imageDesktop = $imageDesktop;
 
 		return $this;
 	}
 
 	/**
-	 * Get imagePath
+	 * Get imageDesktop
 	 *
 	 * @return string
 	 */
-	public function getImagePath()
+	public function getImageDesktop()
 	{
-		return $this->imagePath;
+		return $this->imageDesktop;
 	}
 
 	/**
-	 * Set advertLink
+	 * Set link
 	 *
-	 * @param string $advertLink
+	 * @param string $link
 	 *
 	 * @return Advert
 	 */
-	public function setAdvertLink($advertLink)
+	public function setLink($link)
 	{
-		$this->advertLink = $advertLink;
+		$this->link = $link;
 
 		return $this;
 	}
@@ -253,57 +253,57 @@ class Advert
 	 *
 	 * @return string
 	 */
-	public function getAdvertLink()
+	public function getLink()
 	{
-		return $this->advertLink;
+		return $this->link;
 	}
 
 	/**
-	 * Set imageTabletPath
+	 * Set imageTablet
 	 *
-	 * @param string $imageTabletPath
+	 * @param string $imageTablet
 	 *
 	 * @return Advert
 	 */
-	public function setImageTabletPath($imageTabletPath)
+	public function setImageTablet($imageTablet)
 	{
-		$this->imageTabletPath = $imageTabletPath;
+		$this->imageTablet = $imageTablet;
 
 		return $this;
 	}
 
 	/**
-	 * Get imageTabletPath
+	 * Get imageTablet
 	 *
 	 * @return string
 	 */
-	public function getImageTabletPath()
+	public function getImageTablet()
 	{
-		return $this->imageTabletPath;
+		return $this->imageTablet;
 	}
 
 	/**
-	 * Set imageMobilePath
+	 * Set imageMobile
 	 *
-	 * @param string $imageMobilePath
+	 * @param string $imageMobile
 	 *
 	 * @return Advert
 	 */
-	public function setImageMobilePath($imageMobilePath)
+	public function setImageMobile($imageMobile)
 	{
-		$this->imageMobilePath = $imageMobilePath;
+		$this->imageMobile = $imageMobile;
 
 		return $this;
 	}
 
 	/**
-	 * Get imageMobilePath
+	 * Get imageMobile
 	 *
 	 * @return string
 	 */
-	public function getImageMobilePath()
+	public function getImageMobile()
 	{
-		return $this->imageMobilePath;
+		return $this->imageMobile;
 	}
 
 	/**
