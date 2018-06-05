@@ -2,6 +2,7 @@ parameters:
     octopouce.advertising.repository.advert.class: Octopouce\AdvertisingBundle\Repository\AdvertRepository
     octopouce.advertising.repository.adzone.class: Octopouce\AdvertisingBundle\Repository\AdzoneRepository
     octopouce.advertising.repository.campaign.class: Octopouce\AdvertisingBundle\Repository\CampaignRepository
+    octopouce.advertising.service.file_uploader.class: Octopouce\AdvertisingBundle\Service\FileUploader
 
 services:
     Octopouce\AdvertisingBundle\:
@@ -22,6 +23,7 @@ services:
         class: "%octopouce.advertising.repository.campaign.class%"
         tags:  ['doctrine.repository_service']
 
-    Octopouce\AdvertisingBundle\Service\FileUploader:
+    octopouce.advertising.service.file_uploader:
+        class: "%octopouce.advertising.service.file_uploader.class%"
         arguments:
-            $targetDirectory: '%kernel.project_dir%/public/uploads'
+            $targetDirectory:

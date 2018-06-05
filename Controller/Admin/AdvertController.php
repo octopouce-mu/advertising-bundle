@@ -74,19 +74,19 @@ class AdvertController extends Controller
 
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
+
+			$adzone->addAdvert($advert);
+
 			$em->persist($advert);
 			$em->flush();
 
-			$imgDesktop = $advert->getImageDesktop();
-			$imgDesktopName = $fileUploader->upload($imgDesktop, 'adv/'.$advert->getId());
+			$imgDesktopName = $fileUploader->upload($advert->getImageDesktop(), $advert->getId());
 			$advert->setImageDesktop($imgDesktopName);
 
-			$imgTablet = $advert->getImageTablet();
-			$imgTabletName = $fileUploader->upload($imgTablet, 'adv/'.$advert->getId());
+			$imgTabletName = $fileUploader->upload($advert->getImageTablet(), $advert->getId());
 			$advert->setImageTablet($imgTabletName);
 
-			$imgMobile = $advert->getImageMobile();
-			$imgMobileName = $fileUploader->upload($imgMobile, 'adv/'.$advert->getId());
+			$imgMobileName = $fileUploader->upload($advert->getImageMobile(), $advert->getId());
 			$advert->setImageMobile($imgMobileName);
 
 

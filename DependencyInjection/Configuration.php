@@ -13,26 +13,15 @@ class Configuration implements ConfigurationInterface {
 
 	public function getConfigTreeBuilder()
 	{
-		$builder = new TreeBuilder();
-		$builder
-			->root('octopouce')
-			->beforeNormalization()
-				->always(function (array $config) {
-					if (empty($config)) {
-						return [
-							'advertising' => [
-								'enabled' => true
-							]
-						];
-					}
+		$treeBuilder = new TreeBuilder();
+		$rootNode = $treeBuilder->root('octopouce');
 
-					return $config;
-				})
-			->end()
+		$rootNode
 			->children()
 				->arrayNode('advertising')
 					->children()
-						->booleanNode('enabled')->defaultTrue()->treatNullLike(true)->end()
+						->booleanNode('enabled')->defaultTrue()->end()
+						->scalarNode('upload_path')->defaultValue('uploads/adv')->end()
 					->end()
 				->end()
 			->end()

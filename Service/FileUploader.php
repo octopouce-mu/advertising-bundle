@@ -18,9 +18,11 @@ class FileUploader {
 
 	public function upload(UploadedFile $file, $path = null)
 	{
-		$file->move($this->getTargetDirectory().'/'.$path, $file->getClientOriginalName());
+		$path = str_replace('//', '/', $this->getTargetDirectory().'/'.$path);
 
-		return $file->getClientOriginalName();
+		$file->move($path, $file->getClientOriginalName());
+
+		return str_replace('//', '/',$path.'/'.$file->getClientOriginalName());
 	}
 
 	public function getTargetDirectory()
