@@ -23,6 +23,6 @@ class OctopouceAdvertisingExtension extends Extension
 		$config = $this->processConfiguration($configuration, $configs);
 
 		$definition = $container->getDefinition('octopouce.advertising.service.file_uploader');
-		$definition->replaceArgument('$targetDirectory', $config['octopouce']['advertising']['upload_path']);
+		$definition->addArgument('$targetDirectory', $config['upload_path']);
 	}
 }

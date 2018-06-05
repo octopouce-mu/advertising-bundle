@@ -6,7 +6,7 @@ parameters:
 
 services:
     Octopouce\AdvertisingBundle\:
-        resource: '../../{Controller,Repository,Service}'
+        resource: '../../{Controller,Repository}'
         autowire: true
         autoconfigure: true
         public: true
@@ -25,5 +25,3 @@ services:
 
     octopouce.advertising.service.file_uploader:
         class: "%octopouce.advertising.service.file_uploader.class%"
-        arguments:
-            $targetDirectory:

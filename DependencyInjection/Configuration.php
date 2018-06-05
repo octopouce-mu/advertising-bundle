@@ -14,19 +14,15 @@ class Configuration implements ConfigurationInterface {
 	public function getConfigTreeBuilder()
 	{
 		$treeBuilder = new TreeBuilder();
-		$rootNode = $treeBuilder->root('octopouce');
+		$rootNode = $treeBuilder->root('octopouce_advertising');
 
 		$rootNode
 			->children()
-				->arrayNode('advertising')
-					->children()
-						->booleanNode('enabled')->defaultTrue()->end()
-						->scalarNode('upload_path')->defaultValue('uploads/adv')->end()
-					->end()
-				->end()
+				->booleanNode('enabled')->defaultTrue()->end()
+				->scalarNode('upload_path')->defaultValue('uploads/adv')->end()
 			->end()
 		;
 
-		return $builder;
+		return $treeBuilder;
 	}
 }

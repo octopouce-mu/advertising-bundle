@@ -23,12 +23,14 @@ class CampaignController extends Controller
 	 * @Route("/", name="octopouce_advertising_admin_campaign_index")
 	 */
 	public function index() : Response {
-		$campaignsEnable = $this->getDoctrine()->getRepository(Campaign::class)->findByEnable(true, ['c.endDate' => 'DESC']);
-		$campaignsDisable = $this->getDoctrine()->getRepository(Campaign::class)->findByEnable(false, ['c.endDate' => 'DESC']);
+		$campaignsActive = $this->getDoctrine()->getRepository(Campaign::class)->findByActive(['c.endDate' => 'DESC']);
+		$campaignsPassed = $this->getDoctrine()->getRepository(Campaign::class)->findByPassed(['c.endDate' => 'DESC']);
+		$campaignsFuture = $this->getDoctrine()->getRepository(Campaign::class)->findByFuture(['c.endDate' => 'DESC']);
 
 		return $this->render('@OctopouceAdvertising/Admin/Campaign/index.html.twig', [
-			'campaignsEnable' => $campaignsEnable,
-			'campaignsDisable' => $campaignsDisable
+			'campaignsActive' => $campaignsActive,
+			'campaignsPassed' => $campaignsPassed,
+			'campaignsFuture' => $campaignsFuture
 		]);
 	}
 

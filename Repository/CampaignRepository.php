@@ -13,17 +13,50 @@ class CampaignRepository extends ServiceEntityRepository
 		parent::__construct($registry, Campaign::class);
 	}
 
-	public function findByEnable($enable = true, $sorts = null, $limit = null){
+	public function findByPassed($sorts = null, $limit = null){
 		$qb = $this->createQueryBuilder('c');
 
-		if($enable){
-			$qb->where('c.endDate > :now')
-			   ->setParameter('now', new \DateTime());
-		}else{
-			$qb->where('c.endDate <= :now')
-			   ->setParameter('now', new \DateTime());
+		$qb->where('c.endDate <= :now')
+		   ->setParameter('now', new \DateTime());
+
+		if($sorts){
+			foreach ($sorts as $sort => $order){
+				$qb->addOrderBy($sort, $order);
+			}
 		}
 
+		if($limit){
+			$qb->getMaxResults($limit);
+		}
+
+		return $qb->getQuery()->getResult();
+	}
+
+	public function findByActive($sorts = null, $limit = null){
+		$qb = $this->createQueryBuilder('c');
+
+		$qb->where('c.endDate > :now')
+			->andWhere('c.startDate <= :now')
+		   ->setParameter('now', new \DateTime());
+
+		if($sorts){
+			foreach ($sorts as $sort => $order){
+				$qb->addOrderBy($sort, $order);
+			}
+		}
+
+		if($limit){
+			$qb->getMaxResults($limit);
+		}
+
+		return $qb->getQuery()->getResult();
+	}
+
+	public function findByFuture($sorts = null, $limit = null){
+		$qb = $this->createQueryBuilder('c');
+
+		$qb->where('c.startDate < :now')
+		   ->setParameter('now', new \DateTime());
 
 		if($sorts){
 			foreach ($sorts as $sort => $order){
