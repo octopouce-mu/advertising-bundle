@@ -25,3 +25,4 @@ services:
 
     octopouce.advertising.service.file_uploader:
         class: "%octopouce.advertising.service.file_uploader.class%"
+        autowire: true

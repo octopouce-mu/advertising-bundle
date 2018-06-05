@@ -80,8 +80,7 @@ class AdvertController extends Controller
 			$em->persist($advert);
 			$em->flush();
 
-			$imgDesktopName = $fileUploader->upload($advert->getImageDesktop(), $advert->getId());
-			$advert->setImageDesktop($imgDesktopName);
+
 
 			$imgTabletName = $fileUploader->upload($advert->getImageTablet(), $advert->getId());
 			$advert->setImageTablet($imgTabletName);
@@ -102,5 +101,57 @@ class AdvertController extends Controller
 			'adzone' => $adzone,
 			'form' => $form->createView()
 		]);
+	}
+
+	/**
+	 * @Route("/{advert}/edit", name="octopouce_advertising_admin_advert_edit")
+	 */
+	public function edit(Advert $advert, Request $request) : Response {
+
+		$form = $this->createForm(AdvertType::class, $advert);
+
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+
+			if($image = $request->request->get('imageDesktop')){
+				$imgDesktopName = $fileUploader->upload($image, $advert->getId());
+				$advert->setImageDesktop($imgDesktopName);
+			}
+
+			if($image = $request->request->get('imageTablet')){
+				$imgTabletName = $fileUploader->upload($image, $advert->getId());
+				$advert->setImageTablet($imgTabletName);
+			}
+
+			if($image = $request->request->get('imageMobile')){
+				$imgMobileName = $fileUploader->upload($image, $advert->getId());
+				$advert->setImageMobile($imgMobileName);
+			}
+
+
+			$this->getDoctrine()->getManager()->flush();
+
+			$this->addFlash('success', 'advert.edited');
+
+			return $this->redirectToRoute('octopouce_advertising_admin_advert_show', ['advert' => $advert->getId()]);
+		}
+
+		return $this->render('@OctopouceAdvertising/Admin/Advert/edit.html.twig', [
+			'advert' => $advert,
+			'form' => $form->createView()
+		]);
+	}
+
+	/**
+	 * @Route("/{advert}/delete", name="octopouce_advertising_admin_advert_delete")
+	 */
+	public function delete(Advert $advert, Request $request) : Response {
+		$em = $this->getDoctrine()->getManager();
+		$em->remove($advert);
+		$em->flush();
+
+		$this->addFlash('success', 'advert.deleted');
+
+		return $this->redirectToRoute('octopouce_advertising_admin_advert_index');
 	}
 }

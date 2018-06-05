@@ -25,7 +25,7 @@ class CampaignController extends Controller
 	public function index() : Response {
 		$campaignsActive = $this->getDoctrine()->getRepository(Campaign::class)->findByActive(['c.endDate' => 'DESC']);
 		$campaignsPassed = $this->getDoctrine()->getRepository(Campaign::class)->findByPassed(['c.endDate' => 'DESC']);
-		$campaignsFuture = $this->getDoctrine()->getRepository(Campaign::class)->findByFuture(['c.endDate' => 'DESC']);
+		$campaignsFuture = $this->getDoctrine()->getRepository(Campaign::class)->findByFuture(['c.startDate' => 'ASC']);
 
 		return $this->render('@OctopouceAdvertising/Admin/Campaign/index.html.twig', [
 			'campaignsActive' => $campaignsActive,

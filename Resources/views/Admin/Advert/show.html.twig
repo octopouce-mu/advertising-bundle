@@ -6,7 +6,7 @@
             <div class="col s12">
                 <h1>
                     Advert : {{ advert.name }}
-                    {% if advert.campaign.endDate|date('U') > 'now'|date('U') %}
+                    {% if advert.campaign.endDate|date('U') > 'now'|date('U') and advert.campaign.startDate|date('U') <= 'now'|date('U')  %}
                         <a href="{{ path('octopouce_advertising_admin_advert_edit', {'advert':advert.id}) }}" class="waves-effect waves-light btn orange"><i class="fas fa-pencil-alt"></i></a>
                         <a href="{{ path('octopouce_advertising_admin_advert_delete', {'advert':advert.id}) }}" class="waves-effect waves-light btn red"><i class="fas fa-times"></i></a>
                     {% endif %}
