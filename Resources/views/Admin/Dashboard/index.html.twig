@@ -4,91 +4,63 @@
 
 {% block main %}
     <section class="dashboard padding-filter">
-        <div class="row">
-            <div class="col s6 m6 l3">
-                <div class="box">
-                    <div class="title">Clicks</div>
-                    <div class="content">
-                        2
-                    </div>
-                </div>
-            </div>
-            <div class="col s6 m6 l3">
-                <div class="box">
-                    <div class="title">Impressions</div>
-                    <div class="content">
-                        2
-                    </div>
-                </div>
-            </div>
-            <div class="col s6 m6 l3">
-                <div class="box">
-                    <div class="title">CTR</div>
-                    <div class="content">
-                        2%
-                    </div>
-                </div>
-            </div>
-
-            <div class="col s6 m6 l3">
-                <div class="box">
-                    <div class="title">Statistic of day</div>
-                    <div class="content">
-                        {{ 'now'|date('d/m/Y') }}
-                    </div>
-                </div>
+        <div class="row title">
+            <div class="col s12">
+                <h1>Dashboard</h1>
             </div>
         </div>
-        <div class="row">
-            <div class="col s12">Adzones (by popularity)</div>
+        {% if stats is defined and stats %}
+            {% include '@OctopouceAdvertising/Admin/Common/statistics-day.html.twig' with {'clicks': 0, 'impressions' : 0} %}
+        {% endif %}
+        {% if adzones %}
+            <div class="row">
+                <div class="col s12">Adzones (by popularity)</div>
 
-            {% for adzone in adzones|slice(0, 5) %}
-                <div class="col s6 m6 l2">
-                    <div class="box">
-                        <div class="title">{{ adzone.name }}</div>
-                        <div class="content">
-                            {{ adzone.totalViews }} view(s)
+                {% for adzone in adzones|slice(0, 6) %}
+                    <div class="col s6 m6 l2">
+                        <div class="box">
+                            <div class="title">{{ adzone.name }}</div>
+                            <div class="content">
+                                {{ adzone.totalViews }} view(s)
+                            </div>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
-            <div class="col s6 m6 l2">
-                <div class="box">
-                    <div class="title">All adzones</div>
-                </div>
+                {% endfor %}
             </div>
-        </div>
-        <div class="row">
-            <div class="col s12">Adverts actifs</div>
+        {% endif %}
+        {% if adverts %}
+            <div class="row">
+                <div class="col s12">Adverts actifs</div>
 
-            {% for advert in adverts %}
-                <div class="col s6 m6 l2">
-                    <div class="box">
-                        <div class="bg-img" style="background-image: url('{{ asset(advert.imageDesktop.pathname) }}');"></div>
-                        <div class="title">{{ advert.name }}</div>
-                        <div class="content">
-                            Campaign : {{ advert.campaign.name }} <br>
-                            End to {{ advert.campaign.endDate|date('d/m/y') }} <br>
-                            {{ advert.totalViews }} view(s) | {{ advert.totalClicks }} click(s)
+                {% for advert in adverts %}
+                    <div class="col s6 m6 l6">
+                        <div class="box">
+                            <div class="bg-img" style="background-image: url('{{ asset(advert.imageDesktop.pathname) }}');"></div>
+                            <div class="title">{{ advert.name }}</div>
+                            <div class="content">
+                                Campaign : {{ advert.campaign.name }} <br>
+                                End to {{ advert.campaign.endDate|date('d/m/y') }} <br>
+                                {{ advert.totalViews }} view(s) | {{ advert.totalClicks }} click(s)
+                            </div>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
-            <div class="col s6 m6 l2">
-                <div class="box">
-                    <div class="title">All adverts</div>
-                </div>
+                {% endfor %}
             </div>
-        </div>
+        {% endif %}
         <div class="row">
-            <div class="col s6">
+            <div class="col s4">
                 <div class="box">
-                    <div class="title"><a href="{{ path('octopouce_advertising_admin_campaign_index') }}">Manage campaigns</a></div>
+                    <a class="title center" href="{{ path('octopouce_advertising_admin_campaign_index') }}">Manage campaigns</a>
                 </div>
             </div>
-            <div class="col s6">
+            <div class="col s4">
                 <div class="box">
-                    <div class="title"><a href="{{ path('octopouce_advertising_admin_adzone_index') }}">Manage adzones</a></div>
+                    <a class="title center" href="{{ path('octopouce_advertising_admin_adzone_index') }}">Manage adzones</a>
+                </div>
+            </div>
+            <div class="col s4">
+                <div class="box">
+                    <a class="title center" href="{{ path('octopouce_advertising_admin_page_index') }}">Manage pages</a>
                 </div>
             </div>
         </div>

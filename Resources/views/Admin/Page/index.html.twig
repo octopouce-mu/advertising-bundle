@@ -1,0 +1,47 @@
+{% extends '@OctopouceAdvertising/Admin/layout.html.twig' %}
+
+{% block title %}Pages - {{ parent() }}{% endblock %}
+
+{% block main %}
+    <div class="padding-filter">
+        <div class="row title">
+            <div class="col s12">
+                <h1>Pages <a href="{{ path('octopouce_advertising_admin_page_create') }}" class="waves-effect waves-light btn green"><i class="fas fa-plus"></i></a></h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Adzones</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for page in pages %}
+                            <tr>
+                                <td>{{ page.id }}</td>
+                                <td>{{ page.name }}</td>
+                                <td>
+                                    {% if page.adzones %}
+                                        {% for adzone in page.adzones %}
+                                            <span class="chip blue">{{ adzone.name }}</span>
+                                        {% endfor %}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{{ path('octopouce_advertising_admin_page_edit', {'page':page.id}) }}" class="waves-effect waves-light btn orange"><i class="fas fa-pencil-alt"></i></a>
+                                    <a href="{{ path('octopouce_advertising_admin_page_delete', {'page':page.id}) }}" class="waves-effect waves-light btn red"><i class="fas fa-times"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

@@ -16,41 +16,45 @@
                 </h1>
             </div>
         </div>
-        {% include '@OctopouceAdvertising/Admin/Common/statistics-day.html.twig' with {'clicks': stats.clicks, 'impressions' : stats.impressions} %}
-        <div class="row">
-            <div class="col s12">Pages with adzones and adverts</div>
-            {% for page in pages %}
-                <div class="col s6 m6 l2">
-                    <div class="box">
-                        <div class="title">{{ page.name }}</div>
-                        <div class="content">
-                            {% for adzone in page.adzones %}
-                                {% set advertInAdzone = false %}
-                                {% for advert in adzone.adverts %}
-                                    {% if advert.campaign == campaign %}
+        {% if stats %}
+            {% include '@OctopouceAdvertising/Admin/Common/statistics-day.html.twig' with {'clicks': stats.clicks, 'impressions' : stats.impressions} %}
+        {% endif %}
+        {% if pages %}
+            <div class="row">
+                <div class="col s12">Pages with adzones and adverts</div>
+                {% for page in pages %}
+                    <div class="col s6 m6 l2">
+                        <div class="box">
+                            <div class="title">{{ page.name }}</div>
+                            <div class="content">
+                                {% for adzone in page.adzones %}
+                                    {% set advertInAdzone = false %}
+                                    {% for advert in adzone.adverts %}
+                                        {% if advert.campaign == campaign %}
+                                            <div class="box">
+                                                <div class="bg-img" style="background-image: url('{{ asset(advert.imageDesktop.pathname) }}');"></div>
+                                                <div class="content">
+                                                    <b><a href="{{ path('octopouce_advertising_admin_advert_show', {'advert':advert.id}|merge(app.request.query)) }}">{{ advert.name }}</a></b>
+                                                    <span class="right"><a href="{{ path('octopouce_advertising_admin_advert_unlink', {'advert': advert.id, 'adzone':adzone.id}) }}" onclick="return confirm('Are you sure to unlink advert and adzone ?');"><i class="fas fa-unlink"></i></a></span><br>
+                                                    Adzone : {{ adzone.name }}
+                                                </div>
+                                            </div>
+                                            {% set advertInAdzone = true %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if not advertInAdzone and campaign.isActive %}
                                         <div class="box">
-                                            <div class="bg-img" style="background-image: url('{{ asset(advert.imageDesktop.pathname) }}');"></div>
                                             <div class="content">
-                                                <b><a href="{{ path('octopouce_advertising_admin_advert_show', {'advert':advert.id}|merge(app.request.query)) }}">{{ advert.name }}</a></b>
-                                                <span class="right"><a href="{{ path('octopouce_advertising_admin_advert_unlink', {'advert': advert.id, 'adzone':adzone.id}) }}" onclick="return confirm('Are you sure to unlink advert and adzone ?');"><i class="fas fa-unlink"></i></a></span><br>
-                                                Adzone : {{ adzone.name }}
+                                                <a href="{{ path('octopouce_advertising_admin_advert_create', {'campaign':campaign.id, 'adzone':adzone.id}) }}">Add advert in the adzone "{{ adzone.name }}"</a>
                                             </div>
                                         </div>
-                                        {% set advertInAdzone = true %}
                                     {% endif %}
                                 {% endfor %}
-                                {% if not advertInAdzone and campaign.isActive %}
-                                    <div class="box">
-                                        <div class="content">
-                                            <a href="{{ path('octopouce_advertising_admin_advert_create', {'campaign':campaign.id, 'adzone':adzone.id}) }}">Add advert in the adzone "{{ adzone.name }}"</a>
-                                        </div>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
+                            </div>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
-        </div>
+                {% endfor %}
+            </div>
+        {% endif %}
     </section>
 {% endblock %}

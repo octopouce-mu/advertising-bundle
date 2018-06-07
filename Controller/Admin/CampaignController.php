@@ -41,30 +41,34 @@ class CampaignController extends Controller
 	public function show(Campaign $campaign, AdvertStatistics $advertStatistics, Request $request) : Response {
 		$em = $this->getDoctrine()->getManager();
 
-		foreach ($campaign->getAdverts() as $advert){
-			$advertStatistics->addAdvert($advert);
+		if($campaign->getAdverts()){
+			foreach ($campaign->getAdverts() as $advert){
+				$advertStatistics->addAdvert($advert);
+			}
+
+			$start = $request->get('start');
+			$end = $request->get('end');
+
+			if(!$start || !$end){
+				$start = $campaign->getStartDate();
+				$end = $campaign->getEndDate();
+			}else {
+				$start = new \DateTime($start);
+				$end = new \DateTime($end);
+				$end->modify('+1 day');
+			}
+
+			$stats = $advertStatistics->byDate($start, $end);
 		}
 
-		$start = $request->get('start');
-		$end = $request->get('end');
 
-		if(!$start || !$end){
-			$start = $campaign->getStartDate();
-			$end = $campaign->getEndDate();
-		}else {
-			$start = new \DateTime($start);
-			$end = new \DateTime($end);
-			$end->modify('+1 day');
-		}
-
-		$stats = $advertStatistics->byDate($start, $end);
 
 		$pages = $em->getRepository(Page::class)->findAll();
 
 		return $this->render('@OctopouceAdvertising/Admin/Campaign/show.html.twig', [
 			'campaign' => $campaign,
 			'pages'    => $pages,
-			'stats' => $stats
+			'stats' => $stats ? $stats : null
 		]);
 	}
 

@@ -49,7 +49,8 @@ class AdzoneController extends Controller
 		}
 
 		return $this->render('@OctopouceAdvertising/Admin/Adzone/create.html.twig', [
-			'adzone' => $adzone
+			'adzone' => $adzone,
+			'form' => $form->createView()
 		]);
 	}
 
@@ -69,7 +70,8 @@ class AdzoneController extends Controller
 		}
 
 		return $this->render('@OctopouceAdvertising/Admin/Adzone/edit.html.twig', [
-			'adzone' => $adzone
+			'adzone' => $adzone,
+			'form' => $form->createView()
 		]);
 	}
 

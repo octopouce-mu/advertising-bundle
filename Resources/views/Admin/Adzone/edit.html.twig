@@ -1,0 +1,23 @@
+{% extends '@OctopouceAdvertising/Admin/layout.html.twig' %}
+
+{% block title %}Edit adzone {{ adzone.id }} - {{ parent() }}{% endblock %}
+
+{% block main %}
+    <div class="padding-filter">
+        <div class="row title">
+            <div class="col s12">
+                <h1>Create adzone</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <div class="box">
+                    <div class="content">
+                        {{ form(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

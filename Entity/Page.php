@@ -31,6 +31,13 @@ class Page
 	private $name;
 
 	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="path", type="string", length=255, nullable=true)
+	 */
+	private $path;
+
+	/**
 	 * Many Pages have Many Adzones.
 	 *
 	 * @ORM\ManyToMany(targetEntity="Adzone", mappedBy="pages")
@@ -40,6 +47,11 @@ class Page
 	public function __construct() {
 		$this->adzones = new ArrayCollection();
 	}
+
+	public function __toString() {
+		return $this->getName();
+	}
+
 
 	/**
 	 * Get id
@@ -73,6 +85,30 @@ class Page
 	public function getName()
 	{
 		return $this->name;
+	}
+
+	/**
+	 * Set path
+	 *
+	 * @param string $path
+	 *
+	 * @return Page
+	 */
+	public function setPath($path)
+	{
+		$this->path = $path;
+
+		return $this;
+	}
+
+	/**
+	 * Get path
+	 *
+	 * @return string
+	 */
+	public function getPath()
+	{
+		return $this->path;
 	}
 
 	/**
