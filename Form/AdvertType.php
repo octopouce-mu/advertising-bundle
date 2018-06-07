@@ -19,14 +19,21 @@ class AdvertType extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
+//		var_dump($builder->getData()->getImageDesktop());die;
 
 		$builder
 			->add('name', TextType::class)
 			->add('link', UrlType::class)
 
-			->add('imageDesktop', FileType::class)
-			->add('imageTablet', FileType::class)
-			->add('imageMobile', FileType::class)
+			->add('imageDesktop', FileType::class, [
+				'required' => false
+			])
+			->add('imageTablet', FileType::class, [
+				'required' => false
+			])
+			->add('imageMobile', FileType::class, [
+				'required' => false
+			])
 
 			->add('submit', SubmitType::class, [
 				'label' => 'save',

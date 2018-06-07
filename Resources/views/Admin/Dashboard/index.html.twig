@@ -1,4 +1,6 @@
-{% extends 'admin/layout.html.twig' %}
+{% extends '@OctopouceAdvertising/Admin/layout.html.twig' %}
+
+{% block title %}Advertising - {{ parent() }}{% endblock %}
 
 {% block main %}
     <section class="dashboard padding-filter">
@@ -62,7 +64,7 @@
             {% for advert in adverts %}
                 <div class="col s6 m6 l2">
                     <div class="box">
-                        <div class="bg-img" style="background-image: url('{{ asset(advert.imageDesktop) }}');"></div>
+                        <div class="bg-img" style="background-image: url('{{ asset(advert.imageDesktop.pathname) }}');"></div>
                         <div class="title">{{ advert.name }}</div>
                         <div class="content">
                             Campaign : {{ advert.campaign.name }} <br>

@@ -1,28 +1,18 @@
-parameters:
-    octopouce.advertising.repository.advert.class: Octopouce\AdvertisingBundle\Repository\AdvertRepository
-    octopouce.advertising.repository.adzone.class: Octopouce\AdvertisingBundle\Repository\AdzoneRepository
-    octopouce.advertising.repository.campaign.class: Octopouce\AdvertisingBundle\Repository\CampaignRepository
-    octopouce.advertising.service.file_uploader.class: Octopouce\AdvertisingBundle\Service\FileUploader
-
 services:
     Octopouce\AdvertisingBundle\:
-        resource: '../../{Controller,Repository}'
+        resource: '../../{Controller,Repository,Utils,Utils/Statistics}'
         autowire: true
         autoconfigure: true
-        public: true
+        public: false
 
-    octopouce.advertising.repository.advert:
-        class: "%octopouce.advertising.repository.advert.class%"
-        tags:  ['doctrine.repository_service']
+    Octopouce\AdvertisingBundle\Utils\FileUploader:
+        arguments:
+            $targetDirectory: 'uploads/adv'
 
-    octopouce.advertising.repository.adzone:
-        class: "%octopouce.advertising.repository.adzone.class%"
-        tags:  ['doctrine.repository_service']
-
-    octopouce.advertising.repository.campaign:
-        class: "%octopouce.advertising.repository.campaign.class%"
-        tags:  ['doctrine.repository_service']
-
-    octopouce.advertising.service.file_uploader:
-        class: "%octopouce.advertising.service.file_uploader.class%"
+    Octopouce\AdvertisingBundle\EventListener\AdvertUploadListener:
         autowire: true
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: preRemove }
+            - { name: doctrine.event_listener, event: postLoad }

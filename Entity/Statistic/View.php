@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * view
  *
  * @ORM\Table(name="adv_stat_view")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Octopouce\AdvertisingBundle\Repository\Statistic\ViewRepository")
  */
 class View
 {

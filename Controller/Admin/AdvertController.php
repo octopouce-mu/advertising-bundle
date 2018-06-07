@@ -10,7 +10,7 @@ use Octopouce\AdvertisingBundle\Entity\Advert;
 use Octopouce\AdvertisingBundle\Entity\Adzone;
 use Octopouce\AdvertisingBundle\Entity\Campaign;
 use Octopouce\AdvertisingBundle\Form\AdvertType;
-use Octopouce\AdvertisingBundle\Service\FileUploader;
+use Octopouce\AdvertisingBundle\Utils\Statistics\AdvertStatistics;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,18 +46,46 @@ class AdvertController extends Controller
 	/**
 	 * @Route("/{advert}/show", name="octopouce_advertising_admin_advert_show")
 	 */
-	public function show(Advert $advert) : Response {
-		$em = $this->getDoctrine()->getManager();
+	public function show(Advert $advert, AdvertStatistics $advertStatistics, Request $request) : Response {
+
+		$advertStatistics->addAdvert($advert);
+
+		$start = $request->get('start');
+		$end = $request->get('end');
+
+		if(!$start || !$end){
+			$start = $advert->getCampaign()->getStartDate();
+			$end = $advert->getCampaign()->getEndDate();
+		}else {
+			$start = new \DateTime($start);
+			$end = new \DateTime($end);
+			$end->modify('+1 day');
+		}
+
+		$stats = $advertStatistics->byDate($start, $end);
+
+		$adzones = [];
+		foreach ($advert->getAdzones() as $adzone){
+			$advertStatistics->setAdzone($adzone);
+
+			$adzones[] = [
+				'adzone' => $adzone,
+				'stats' => $advertStatistics->byDate($start, $end)
+			];
+		}
+
 
 		return $this->render('@OctopouceAdvertising/Admin/Advert/show.html.twig', [
-			'advert' => $advert
+			'advert' => $advert,
+			'stats' => $stats,
+			'adzones' => $adzones
 		]);
 	}
 
 	/**
 	 * @Route("/create", name="octopouce_advertising_admin_advert_create")
 	 */
-	public function create(Request $request, FileUploader $fileUploader) : Response {
+	public function create(Request $request) : Response {
 		$em = $this->getDoctrine()->getManager();
 
 		$campaignId = $request->get('campaign');
@@ -80,18 +108,6 @@ class AdvertController extends Controller
 			$em->persist($advert);
 			$em->flush();
 
-
-
-			$imgTabletName = $fileUploader->upload($advert->getImageTablet(), $advert->getId());
-			$advert->setImageTablet($imgTabletName);
-
-			$imgMobileName = $fileUploader->upload($advert->getImageMobile(), $advert->getId());
-			$advert->setImageMobile($imgMobileName);
-
-
-			$em->persist($advert);
-			$em->flush();
-
 			return $this->redirectToRoute('octopouce_advertising_admin_campaign_show', ['campaign'=>$campaignId]);
 		}
 
@@ -110,24 +126,16 @@ class AdvertController extends Controller
 
 		$form = $this->createForm(AdvertType::class, $advert);
 
+		$imgDesktopOld = $advert->getImageDesktop();
+		$imgTabletOld = $advert->getImageTablet();
+		$imgMobileOld = $advert->getImageMobile();
+
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
 
-			if($image = $request->request->get('imageDesktop')){
-				$imgDesktopName = $fileUploader->upload($image, $advert->getId());
-				$advert->setImageDesktop($imgDesktopName);
-			}
-
-			if($image = $request->request->get('imageTablet')){
-				$imgTabletName = $fileUploader->upload($image, $advert->getId());
-				$advert->setImageTablet($imgTabletName);
-			}
-
-			if($image = $request->request->get('imageMobile')){
-				$imgMobileName = $fileUploader->upload($image, $advert->getId());
-				$advert->setImageMobile($imgMobileName);
-			}
-
+			if(!$advert->getImageDesktop()) $advert->setImageDesktop($imgDesktopOld->getFileName());
+			if(!$advert->getImageTablet()) $advert->setImageTablet($imgTabletOld->getFileName());
+			if(!$advert->getImageMobile()) $advert->setImageMobile($imgMobileOld->getFileName());
 
 			$this->getDoctrine()->getManager()->flush();
 
@@ -145,13 +153,42 @@ class AdvertController extends Controller
 	/**
 	 * @Route("/{advert}/delete", name="octopouce_advertising_admin_advert_delete")
 	 */
-	public function delete(Advert $advert, Request $request) : Response {
+	public function delete(Advert $advert) : Response {
 		$em = $this->getDoctrine()->getManager();
+		$campaignId = $advert->getCampaign()->getId();
 		$em->remove($advert);
 		$em->flush();
 
 		$this->addFlash('success', 'advert.deleted');
 
-		return $this->redirectToRoute('octopouce_advertising_admin_advert_index');
+		return $this->redirectToRoute('octopouce_advertising_admin_campaign_show', ['campaign'=>$campaignId]);
+	}
+
+	/**
+	 * @Route("/{advert}/{adzone}/unlink", name="octopouce_advertising_admin_advert_unlink")
+	 */
+	public function unlink(Advert $advert, Adzone $adzone) : Response {
+		$em = $this->getDoctrine()->getManager();
+		$advert->removeAdzone($adzone);
+		$adzone->removeAdvert($advert);
+		$em->flush();
+
+		$this->addFlash('success', 'advert.unlink');
+
+		return $this->redirectToRoute('octopouce_advertising_admin_campaign_show', ['campaign'=>$advert->getCampaign()->getId()]);
+	}
+
+	/**
+	 * @Route("/{advert}/{adzone}/link", name="octopouce_advertising_admin_advert_link")
+	 */
+	public function link(Advert $advert, Adzone $adzone) : Response {
+		$em = $this->getDoctrine()->getManager();
+		$advert->addAdzone($adzone);
+		$adzone->addAdvert($advert);
+		$em->flush();
+
+		$this->addFlash('success', 'advert.link');
+
+		return $this->redirectToRoute('octopouce_advertising_admin_campaign_show', ['campaign'=>$advert->getCampaign()->getId()]);
 	}
 }

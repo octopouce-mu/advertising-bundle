@@ -66,10 +66,19 @@ class Adzone
 	 */
 	private $statsView;
 
+	/**
+	 * @var ArrayCollection
+	 *
+	 * @ORM\OneToMany(targetEntity="Octopouce\AdvertisingBundle\Entity\Statistic\Click", mappedBy="adzone", cascade={"persist", "remove"})
+	 */
+	private $statsClick;
+
 
 	public function __construct() {
 		$this->adverts = new ArrayCollection();
 		$this->pages = new ArrayCollection();
+		$this->statsView = new ArrayCollection();
+		$this->statsClick = new ArrayCollection();
 	}
 
 	/**
@@ -84,6 +93,23 @@ class Adzone
 
 		foreach ($views as $view){
 			$total += $view->getViews();
+		}
+
+		return $total;
+	}
+
+	/**
+	 * Get totalClicks
+	 *
+	 * @return int
+	 */
+	public function getTotalClicks()
+	{
+		$total = 0;
+		$clicks = $this->getStatsClick();
+
+		foreach ($clicks as $click){
+			$total += $click->getClicks();
 		}
 
 		return $total;
@@ -274,6 +300,42 @@ class Adzone
 	public function getStatsView()
 	{
 		return $this->statsView;
+	}
+
+	/**
+	 * Add statsClick.
+	 *
+	 * @param \Octopouce\AdvertisingBundle\Entity\Statistic\Click $statsClick
+	 *
+	 * @return Adzone
+	 */
+	public function addStatsClick(\Octopouce\AdvertisingBundle\Entity\Statistic\Click $statsClick)
+	{
+		$this->statsClick[] = $statsClick;
+
+		return $this;
+	}
+
+	/**
+	 * Remove statsClick.
+	 *
+	 * @param \Octopouce\AdvertisingBundle\Entity\Statistic\Click $statsClick
+	 *
+	 * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+	 */
+	public function removeStatsClick(\Octopouce\AdvertisingBundle\Entity\Statistic\Click $statsClick)
+	{
+		return $this->statsClick->removeElement($statsClick);
+	}
+
+	/**
+	 * Get statsClick.
+	 *
+	 * @return ArrayCollection
+	 */
+	public function getStatsClick()
+	{
+		return $this->statsClick;
 	}
 
 

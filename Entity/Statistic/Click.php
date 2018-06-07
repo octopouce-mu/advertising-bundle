@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Click
  *
  * @ORM\Table(name="adv_stat_click")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Octopouce\AdvertisingBundle\Repository\Statistic\ClickRepository")
  */
 class Click
 {
@@ -43,6 +43,14 @@ class Click
 	 * @ORM\JoinColumn(name="advert_id", referencedColumnName="id")
 	 */
 	private $advert;
+
+	/**
+	 * @var \Octopouce\AdvertisingBundle\Entity\Adzone
+	 *
+	 * @ORM\ManyToOne(targetEntity="Octopouce\AdvertisingBundle\Entity\Adzone", inversedBy="statsClick")
+	 * @ORM\JoinColumn(name="adzone_id", referencedColumnName="id")
+	 */
+	private $adzone;
 
 	/**
 	 * Get id
@@ -136,5 +144,29 @@ class Click
 	public function getAdvert()
 	{
 		return $this->advert;
+	}
+
+	/**
+	 * Set adzone
+	 *
+	 * @param \Octopouce\AdvertisingBundle\Entity\Adzone $adzone
+	 *
+	 * @return Click
+	 */
+	public function setAdzone(\Octopouce\AdvertisingBundle\Entity\Adzone $adzone = null)
+	{
+		$this->adzone = $adzone;
+
+		return $this;
+	}
+
+	/**
+	 * Get adzone
+	 *
+	 * @return \Octopouce\AdvertisingBundle\Entity\Adzone
+	 */
+	public function getAdzone()
+	{
+		return $this->adzone;
 	}
 }

@@ -4,25 +4,24 @@
  * Date: 22/03/2018
  */
 
-namespace Octopouce\AdvertisingBundle\Service;
+namespace Octopouce\AdvertisingBundle\Utils;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileUploader {
+
 	private $targetDirectory;
 
-	public function __construct($targetDirectory)
+	public function __construct(string $targetDirectory)
 	{
 		$this->targetDirectory = $targetDirectory;
 	}
 
 	public function upload(UploadedFile $file, $path = null)
 	{
-		$path = str_replace('//', '/', $this->getTargetDirectory().'/'.$path);
 
-		$file->move($path, $file->getClientOriginalName());
-
-		return str_replace('//', '/',$path.'/'.$file->getClientOriginalName());
+		$file->move(str_replace('//', '/', $this->getTargetDirectory().'/'.$path), $file->getClientOriginalName());
+		return $file->getClientOriginalName();
 	}
 
 	public function getTargetDirectory()

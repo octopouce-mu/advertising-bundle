@@ -1,21 +1,84 @@
-{% extends 'admin/layout.html.twig' %}
+{% extends '@OctopouceAdvertising/Admin/layout.html.twig' %}
+
+{% block title %}Advert {{ advert.id }} - {{ parent() }}{% endblock %}
 
 {% block main %}
     <section class="padding-filter">
         <div class="row title">
             <div class="col s12">
                 <h1>
-                    Advert : {{ advert.name }}
-                    {% if advert.campaign.endDate|date('U') > 'now'|date('U') and advert.campaign.startDate|date('U') <= 'now'|date('U')  %}
+                    <a href="{{ advert.link }}" target="_blank" title="Link {{ advert.name }} : {{ advert.link }}"><i class="fas fa-link"></i></a> Advert : {{ advert.name }}
+                    {% if advert.isActive  %}
                         <a href="{{ path('octopouce_advertising_admin_advert_edit', {'advert':advert.id}) }}" class="waves-effect waves-light btn orange"><i class="fas fa-pencil-alt"></i></a>
                         <a href="{{ path('octopouce_advertising_admin_advert_delete', {'advert':advert.id}) }}" class="waves-effect waves-light btn red"><i class="fas fa-times"></i></a>
                     {% endif %}
-                    <span class="right">{{ advert.campaign.startDate|date('d/m/Y') }} - {{ advert.campaign.endDate|date('d/m/Y') }}</span>
+                    <span class="right" id="reportrange"><i class="fa fa-calendar"></i>&nbsp;<span></span> <i class="fa fa-caret-down"></i></span>
                 </h1>
             </div>
         </div>
         <div class="row">
-
+            <div class="col s12">
+                <a href="{{ path('octopouce_advertising_admin_campaign_show', {'campaign':advert.campaign.id}) }}" class="waves-effect waves-light btn transparent"><i class="fas fa-arrow-left"></i> back to campaign</a>
+            </div>
         </div>
+        {% include '@OctopouceAdvertising/Admin/Common/statistics-day.html.twig' with {'clicks': stats.clicks, 'impressions' : stats.impressions} %}
+        <div class="row">
+            <div class="col s12">
+                Adzones
+            </div>
+            {% for adzone in adzones %}
+                <div class="col s3">
+                    <div class="box">
+                        <div class="title">
+                            {{ adzone.adzone.name }}
+                        </div>
+                        <div class="content">
+                            {{ adzone.stats.clicks }} clicks <br>
+                            {{ adzone.stats.impressions }} impressions <br>
+                            {{ (adzone.stats.clicks / 100) * adzone.stats.impressions }}% CTR
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {% if advert.imageDesktop or advert.imageTablet or advert.imageMobile %}
+            <div class="row">
+                <div class="col s12">
+                    Images
+                </div>
+                {% if advert.imageDesktop %}
+                <div class="col s4">
+                    <div class="box">
+                        <div class="title">Desktop</div>
+                        <div class="content">
+                            <img src="{{ asset(advert.imageDesktop.pathname) }}" alt="" width="100%">
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if advert.imageTablet %}
+                    <div class="col s4">
+                        <div class="box">
+                            <div class="title">Tablet</div>
+                            <div class="content">
+                                <img src="{{ asset(advert.imageTablet.pathname) }}" alt="" width="100%">
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if advert.imageMobile %}
+                    <div class="col s4">
+                        <div class="box">
+                            <div class="title">Mobile</div>
+                            <div class="content">
+                                <img src="{{ asset(advert.imageMobile.pathname) }}" alt="" width="100%">
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
     </section>
 {% endblock %}

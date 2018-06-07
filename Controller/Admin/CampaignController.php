@@ -9,6 +9,7 @@ namespace Octopouce\AdvertisingBundle\Controller\Admin;
 use Octopouce\AdvertisingBundle\Entity\Campaign;
 use Octopouce\AdvertisingBundle\Entity\Page;
 use Octopouce\AdvertisingBundle\Form\CampaignType;
+use Octopouce\AdvertisingBundle\Utils\Statistics\AdvertStatistics;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,14 +38,33 @@ class CampaignController extends Controller
 	/**
 	 * @Route("/{campaign}/show", name="octopouce_advertising_admin_campaign_show")
 	 */
-	public function show(Campaign $campaign) : Response {
+	public function show(Campaign $campaign, AdvertStatistics $advertStatistics, Request $request) : Response {
 		$em = $this->getDoctrine()->getManager();
+
+		foreach ($campaign->getAdverts() as $advert){
+			$advertStatistics->addAdvert($advert);
+		}
+
+		$start = $request->get('start');
+		$end = $request->get('end');
+
+		if(!$start || !$end){
+			$start = $campaign->getStartDate();
+			$end = $campaign->getEndDate();
+		}else {
+			$start = new \DateTime($start);
+			$end = new \DateTime($end);
+			$end->modify('+1 day');
+		}
+
+		$stats = $advertStatistics->byDate($start, $end);
 
 		$pages = $em->getRepository(Page::class)->findAll();
 
 		return $this->render('@OctopouceAdvertising/Admin/Campaign/show.html.twig', [
 			'campaign' => $campaign,
-			'pages'    => $pages
+			'pages'    => $pages,
+			'stats' => $stats
 		]);
 	}
 

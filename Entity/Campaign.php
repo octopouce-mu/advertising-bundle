@@ -57,6 +57,14 @@ class Campaign
 	 */
 	private $adverts;
 
+	public function isActive() {
+		$now = new \DateTime();
+		if($this->getStartDate() <= $now && $this->getEndDate() > $now){
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	/**
 	 * Get id

@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="col s6 m6 l3">
+        <div class="box">
+            <div class="title">Clicks</div>
+            <div class="content">
+                {{ clicks }}
+            </div>
+        </div>
+    </div>
+    <div class="col s6 m6 l3">
+        <div class="box">
+            <div class="title">Impressions</div>
+            <div class="content">
+                {{ impressions }}
+            </div>
+        </div>
+    </div>
+    <div class="col s6 m6 l3">
+        <div class="box">
+            <div class="title">CTR</div>
+            <div class="content">
+                {{ (clicks / 100) * impressions }}%
+            </div>
+        </div>
+    </div>
+</div>

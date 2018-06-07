@@ -46,14 +46,14 @@ class Advert
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(name="image_tablet", type="string", length=255)
+	 * @ORM\Column(name="image_tablet", type="string", length=255, nullable=true)
 	 */
 	private $imageTablet;
 
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(name="image_mobile", type="string", length=255)
+	 * @ORM\Column(name="image_mobile", type="string", length=255, nullable=true)
 	 */
 	private $imageMobile;
 
@@ -140,6 +140,10 @@ class Advert
 	{
 		$this->adzones = new ArrayCollection();
 		$this->interactive = false;
+	}
+
+	public function isActive() {
+		return $this->getCampaign()->isActive();
 	}
 
 	/**

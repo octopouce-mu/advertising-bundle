@@ -1,0 +1,167 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    {% if advert is defined or campaign is defined %}
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+        <script type="text/javascript">
+
+            {% if advert is defined %}
+                {% set campaign = advert.campaign %}
+            {% endif %}
+
+            {% if campaign is defined %}
+                {% set min = campaign.startDate|date('Y-m-d') %}
+                {% set max = campaign.endDate|date('Y-m-d') %}
+            {% endif %}
+
+            {% if app.request.get('start') %}
+                {% set start = app.request.get('start') %}
+            {% else %}
+                {% set start = min %}
+            {% endif %}
+
+            {% if app.request.get('end') %}
+                {% set end = app.request.get('end') %}
+            {% else %}
+                {% set end = max %}
+            {% endif %}
+
+
+            $(function() {
+                moment.locale('fr', {
+                    months : 'janvier_février_mars_avril_mai_juin_juillet_août_septembre_octobre_novembre_décembre'.split('_'),
+                    monthsShort : 'janv._févr._mars_avr._mai_juin_juil._août_sept._oct._nov._déc.'.split('_'),
+                    monthsParseExact : true,
+                    weekdays : 'dimanche_lundi_mardi_mercredi_jeudi_vendredi_samedi'.split('_'),
+                    weekdaysShort : 'dim._lun._mar._mer._jeu._ven._sam.'.split('_'),
+                    weekdaysMin : 'Di_Lu_Ma_Me_Je_Ve_Sa'.split('_'),
+                    weekdaysParseExact : true,
+                    longDateFormat : {
+                        LT : 'HH:mm',
+                        LTS : 'HH:mm:ss',
+                        L : 'DD/MM/YYYY',
+                        LL : 'D MMMM YYYY',
+                        LLL : 'D MMMM YYYY HH:mm',
+                        LLLL : 'dddd D MMMM YYYY HH:mm'
+                    },
+                    calendar : {
+                        sameDay : '[Aujourd’hui à] LT',
+                        nextDay : '[Demain à] LT',
+                        nextWeek : 'dddd [à] LT',
+                        lastDay : '[Hier à] LT',
+                        lastWeek : 'dddd [dernier à] LT',
+                        sameElse : 'L'
+                    },
+                    relativeTime : {
+                        future : 'dans %s',
+                        past : 'il y a %s',
+                        s : 'quelques secondes',
+                        m : 'une minute',
+                        mm : '%d minutes',
+                        h : 'une heure',
+                        hh : '%d heures',
+                        d : 'un jour',
+                        dd : '%d jours',
+                        M : 'un mois',
+                        MM : '%d mois',
+                        y : 'un an',
+                        yy : '%d ans'
+                    },
+                    dayOfMonthOrdinalParse : /\d{1,2}(er|e)/,
+                    ordinal : function (number) {
+                        return number + (number === 1 ? 'er' : 'e');
+                    },
+                    meridiemParse : /PD|MD/,
+                    isPM : function (input) {
+                        return input.charAt(0) === 'M';
+                    },
+                    // In case the meridiem units are not separated around 12, then implement
+                    // this function (look at locale/id.js for an example).
+                    // meridiemHour : function (hour, meridiem) {
+                    //     return /* 0-23 hour, given meridiem token and hour 1-12 */ ;
+                    // },
+                    meridiem : function (hours, minutes, isLower) {
+                        return hours < 12 ? 'PD' : 'MD';
+                    },
+                    week : {
+                        dow : 1, // Monday is the first day of the week.
+                        doy : 4  // The week that contains Jan 4th is the first week of the year.
+                    }
+                });
+
+                var start = moment("{{ start }}");
+                var end = moment("{{ end }}");
+
+                var min = moment("{{ min }}");
+                var max = moment("{{ max }}");
+
+
+                function cb(start, end) {
+                    $('#reportrange span').html(start.format('D MMMM YYYY') + ' - ' + end.format('D MMMM YYYY'));
+                }
+
+
+                $('#reportrange').daterangepicker({
+                    startDate: start,
+                    minDate: min,
+                    endDate: end,
+                    maxDate: max,
+                    locale: {
+                        "format": "DD/MM/YYYY",
+                        "separator": " - ",
+                        "applyLabel": "Appliquer",
+                        "cancelLabel": "Annuler",
+                        "fromLabel": "De",
+                        "toLabel": "À",
+                        "customRangeLabel": "Personnaliser",
+                        "weekLabel": "S",
+                        "daysOfWeek": [
+                            "Dim",
+                            "Lun",
+                            "Mar",
+                            "Mer",
+                            "Jeu",
+                            "Ven",
+                            "Sam"
+                        ],
+                        "monthNames": [
+                            "Janvier",
+                            "Février",
+                            "Mars",
+                            "Avril",
+                            "Mai",
+                            "Juin",
+                            "Juillet",
+                            "Août",
+                            "Septembre",
+                            "Octobre",
+                            "Novembre",
+                            "Décembre"
+                        ],
+                        "firstDay": 1
+                    },
+                    opens: "left",
+                    ranges: {
+                        'Aujourd\'hui': [moment(), moment()],
+                        'Hier': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                        'Les 7 derniers jours': [moment().subtract(6, 'days'), moment()],
+                        'Les 30 derniers jours': [moment().subtract(29, 'days'), moment()],
+                        'Ce mois ci': [moment().startOf('month'), moment().endOf('month')],
+                        'Le mois dernier': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                    }
+                }, cb);
+
+                cb(start, end);
+
+                $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
+                    {#console.log("{{ path(app.request.get('_route'), app.request.get('_route_params')) }}?start="+picker.startDate.format('YYYY-MM-DD')+"&end="+picker.endDate.format('YYYY-MM-DD'));#}
+                    window.location.href = "{{ path(app.request.get('_route'), app.request.get('_route_params')) }}?start="+picker.startDate.format('YYYY-MM-DD')+"&end="+picker.endDate.format('YYYY-MM-DD');
+                });
+
+            });
+        </script>
+    {% endif %}
+{% endblock %}
