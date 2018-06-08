@@ -10,7 +10,7 @@
             </div>
         </div>
         {% if stats is defined and stats %}
-            {% include '@OctopouceAdvertising/Admin/Common/statistics-day.html.twig' with {'clicks': 0, 'impressions' : 0} %}
+            {% include '@OctopouceAdvertising/Admin/Common/statistics-day.html.twig' with {'clicks': 0, 'impressions' : 0, 'today':true} %}
         {% endif %}
         {% if adzones %}
             <div class="row">
@@ -21,7 +21,9 @@
                         <div class="box">
                             <div class="title">{{ adzone.name }}</div>
                             <div class="content">
-                                {{ adzone.totalViews }} view(s)
+                                {{ adzone.totalViews }} view{% if adzone.totalViews %}s{% endif %} | {{ adzone.totalClicks }} click{% if adzone.totalClicks %}s{% endif %}
+                                <br>
+                                Pages : {% for page in adzone.pages %}{{ page.name }}{% if not loop.last %}, {% endif %}{% endfor %}
                             </div>
                         </div>
                     </div>
@@ -33,14 +35,14 @@
                 <div class="col s12">Adverts actifs</div>
 
                 {% for advert in adverts %}
-                    <div class="col s6 m6 l6">
+                    <div class="col s6 m6 l2">
                         <div class="box">
                             <div class="bg-img" style="background-image: url('{{ asset(advert.imageDesktop.pathname) }}');"></div>
-                            <div class="title">{{ advert.name }}</div>
+                            <a href="{{ path('octopouce_advertising_admin_advert_show', {'advert':advert.id}) }}" class="title">{{ advert.name }}</a>
                             <div class="content">
-                                Campaign : {{ advert.campaign.name }} <br>
+                                Campaign : <a href="{{ path('octopouce_advertising_admin_campaign_show', {'campaign':advert.campaign.id}) }}">{{ advert.campaign.name }}</a><br>
                                 End to {{ advert.campaign.endDate|date('d/m/y') }} <br>
-                                {{ advert.totalViews }} view(s) | {{ advert.totalClicks }} click(s)
+                                {{ advert.totalViews }} view{% if advert.totalViews %}s{% endif %} | {{ advert.totalClicks }} click{% if advert.totalClicks %}s{% endif %}
                             </div>
                         </div>
                     </div>

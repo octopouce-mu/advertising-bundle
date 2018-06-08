@@ -41,7 +41,7 @@ class CampaignController extends Controller
 	public function show(Campaign $campaign, AdvertStatistics $advertStatistics, Request $request) : Response {
 		$em = $this->getDoctrine()->getManager();
 
-		if($campaign->getAdverts()){
+		if($campaign->getAdverts()->count() > 0){
 			foreach ($campaign->getAdverts() as $advert){
 				$advertStatistics->addAdvert($advert);
 			}
@@ -68,7 +68,7 @@ class CampaignController extends Controller
 		return $this->render('@OctopouceAdvertising/Admin/Campaign/show.html.twig', [
 			'campaign' => $campaign,
 			'pages'    => $pages,
-			'stats' => $stats ? $stats : null
+			'stats' => isset($stats) ? $stats : null
 		]);
 	}
 

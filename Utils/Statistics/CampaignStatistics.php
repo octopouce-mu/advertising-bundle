@@ -1,19 +1,17 @@
 <?php
 /**
  * Created by Kévin Hilairet <kevin@octopouce.mu>
- * Date: 06/06/2018
+ * Date: 08/06/2018
  */
 
 namespace Octopouce\AdvertisingBundle\Utils\Statistics;
 
 
 use Doctrine\ORM\EntityManagerInterface;
-use Octopouce\AdvertisingBundle\Entity\Advert;
-use Octopouce\AdvertisingBundle\Entity\Adzone;
 use Octopouce\AdvertisingBundle\Entity\Statistic\Click;
 use Octopouce\AdvertisingBundle\Entity\Statistic\View;
 
-class AdvertStatistics {
+class CampaignStatistics {
 
 	/**
 	 * @var \DateTime
@@ -28,10 +26,7 @@ class AdvertStatistics {
 	/**
 	 * @var array
 	 */
-	private $adverts = [];
-
-	/** @var Adzone */
-	private $adzone;
+	private $campaigns = [];
 
 	/**
 	 * @var EntityManagerInterface
@@ -65,9 +60,8 @@ class AdvertStatistics {
 	public function getImpressions($start = null, $end = null, $adzone = null){
 		$start = $start ? $start : $this->getStart();
 		$end = $end ? $end : $this->getEnd();
-		$adzone = $adzone ? $adzone : $this->getAdzone();
 
-		$impressions = $this->em->getRepository(View::class)->findByAdverts($this->getAdverts(), $start, $end, $adzone);
+		$impressions = $this->em->getRepository(View::class)->findByCampaigns($this->getCampaigns(), $start, $end, $adzone);
 
 		return $impressions ? $impressions : 0;
 	}
@@ -75,9 +69,8 @@ class AdvertStatistics {
 	public function getClicks($start = null, $end = null, $adzone = null){
 		$start = $start ? $start : $this->getStart();
 		$end = $end ? $end : $this->getEnd();
-		$adzone = $adzone ? $adzone : $this->getAdzone();
 
-		$clicks = $this->em->getRepository(Click::class)->findByAdverts($this->getAdverts(), $start, $end, $adzone);
+		$clicks = $this->em->getRepository(Click::class)->findByCampaigns($this->getCampaigns(), $start, $end, $adzone);
 
 		return $clicks ? $clicks : 0;
 	}
@@ -115,39 +108,14 @@ class AdvertStatistics {
 	/**
 	 * @return array
 	 */
-	public function getAdverts(): array {
-		return $this->adverts;
+	public function getCampaigns(): array {
+		return $this->campaigns;
 	}
 
 	/**
-	 * @param Advert $advert
+	 * @param array $campaigns
 	 */
-	public function addAdvert( Advert $advert ): void {
-		$this->adverts[] = $advert;
+	public function setCampaigns( array $campaigns ): void {
+		$this->campaigns = $campaigns;
 	}
-
-	/**
-	 * @param array $adverts
-	 */
-	public function setAdverts( array $adverts ): void {
-		$this->adverts = $adverts;
-	}
-
-	/**
-	 * @return Adzone
-	 */
-	public function getAdzone() {
-		return $this->adzone;
-	}
-
-	/**
-	 * @param Adzone $adzone
-	 */
-	public function setAdzone( Adzone $adzone ): void {
-		$this->adzone = $adzone;
-	}
-
-
-
-
 }

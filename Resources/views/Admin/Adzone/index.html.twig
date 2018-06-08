@@ -19,6 +19,9 @@
                             <th>Width</th>
                             <th>Height</th>
                             <th>Pages</th>
+                            <th>Views</th>
+                            <th>Clicks</th>
+                            <th>CTR</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -36,6 +39,9 @@
                                         {% endfor %}
                                     {% endif %}
                                 </td>
+                                <td>{{ adzone.totalViews }}</td>
+                                <td>{{ adzone.totalClicks }}</td>
+                                <td>{{ (adzone.totalClicks / 100) * adzone.totalViews }}%</td>
                                 <td>
                                     <a href="{{ path('octopouce_advertising_admin_adzone_edit', {'adzone':adzone.id}) }}" class="waves-effect waves-light btn orange"><i class="fas fa-pencil-alt"></i></a>
                                     <a href="{{ path('octopouce_advertising_admin_adzone_delete', {'adzone':adzone.id}) }}" class="waves-effect waves-light btn red"><i class="fas fa-times"></i></a>

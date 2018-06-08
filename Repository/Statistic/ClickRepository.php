@@ -13,10 +13,10 @@ class ClickRepository extends ServiceEntityRepository
 		parent::__construct($registry, Click::class);
 	}
 
-	public function findByAdverts($adverts, $start = null, $end = null, $adzone = null){
-		$qb = $this->createQueryBuilder('v')
-					->select('SUM(v.clicks)')
-		           ->leftJoin('v.advert', 'a');
+	public function findByAdverts(array $adverts, $start = null, $end = null, $adzone = null){
+		$qb = $this->createQueryBuilder('c')
+					->select('SUM(c.clicks)')
+		           ->leftJoin('c.advert', 'a');
 
 		foreach ($adverts as $advert){
 			$qb->andWhere('a = :advert')
@@ -24,17 +24,17 @@ class ClickRepository extends ServiceEntityRepository
 		}
 
 		if($start){
-			$qb->andWhere('v.date >= :start')
+			$qb->andWhere('c.date >= :start')
 				->setParameter('start', $start);
 		}
 
 		if($end){
-			$qb->andWhere('v.date < :end')
+			$qb->andWhere('c.date < :end')
 			   ->setParameter('end', $end);
 		}
 
 		if($adzone){
-			$qb->andWhere('v.adzone = :adzone')
+			$qb->andWhere('c.adzone = :adzone')
 			   ->setParameter('adzone', $adzone);
 		}
 
@@ -42,21 +42,50 @@ class ClickRepository extends ServiceEntityRepository
 	}
 
 	public function findByAdzone($adzone, $start = null, $end = null){
-		$qb = $this->createQueryBuilder('v')
-		           ->select('SUM(v.clicks)')
-		           ->leftJoin('v.adzone', 'a');
+		$qb = $this->createQueryBuilder('c')
+		           ->select('SUM(c.clicks)')
+		           ->leftJoin('c.adzone', 'a');
 
 		$qb->where('a = :adzone')
 		   ->setParameter('adzone', $adzone);
 
 		if($start){
-			$qb->andWhere('v.date >= :start')
+			$qb->andWhere('c.date >= :start')
 			   ->setParameter('start', $start);
 		}
 
 		if($end){
-			$qb->andWhere('v.date < :end')
+			$qb->andWhere('c.date < :end')
 			   ->setParameter('end', $end);
+		}
+
+		return $qb->getQuery()->getSingleScalarResult();
+	}
+
+	public function findByCampaigns(array $campaigns, $start = null, $end = null, $adzone = null){
+		$qb = $this->createQueryBuilder('c')
+		           ->select('SUM(c.clicks)')
+		           ->leftJoin('c.advert', 'a')
+		           ->leftJoin('a.campaign', 'ca');
+
+		foreach ($campaigns as $campaign){
+			$qb->andWhere('ca = :campaign')
+			   ->setParameter('campaign', $campaign);
+		}
+
+		if($start){
+			$qb->andWhere('c.date >= :start')
+			   ->setParameter('start', $start);
+		}
+
+		if($end){
+			$qb->andWhere('c.date < :end')
+			   ->setParameter('end', $end);
+		}
+
+		if($adzone){
+			$qb->andWhere('c.adzone = :adzone')
+			   ->setParameter('adzone', $adzone);
 		}
 
 		return $qb->getQuery()->getSingleScalarResult();
