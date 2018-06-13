@@ -14,14 +14,28 @@ class AdzoneRepository extends ServiceEntityRepository
 		parent::__construct($registry, Adzone::class);
 	}
 
-//	public function findAll(){
-//		$qb = $this->createQueryBuilder('a')
-//		           ->leftJoin('a.statsView', 's')
-//		           ->addSelect('SUM(s.views');
-//
-//
-//		return $qb->getQuery()->getResult();
-//	}
+	public function findOneByPageByAdzone($route, $adzoneName){
+		$qb = $this->createQueryBuilder('a');
+		$qb->leftJoin('a.pages', 'p');
 
+		$qb->where('p.path LIKE :route')
+		   ->setParameter('route', $route)
+		   ->andWhere('a.name LIKE :adzoneName')
+		   ->setParameter('adzoneName', $adzoneName);
+
+
+		return $qb->getQuery()->getOneOrNullResult();
+	}
+
+	public function findByPath($route){
+		$qb = $this->createQueryBuilder('a');
+		$qb->leftJoin('a.pages', 'p');
+
+		$qb->where('p.path LIKE :route')
+			->setParameter('route', $route);
+
+
+		return $qb->getQuery()->getResult();
+	}
 
 }

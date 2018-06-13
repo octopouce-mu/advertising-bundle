@@ -133,9 +133,10 @@ class AdvertController extends Controller
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
 
-			if(!$advert->getImageDesktop()) $advert->setImageDesktop($imgDesktopOld->getFileName());
-			if(!$advert->getImageTablet()) $advert->setImageTablet($imgTabletOld->getFileName());
-			if(!$advert->getImageMobile()) $advert->setImageMobile($imgMobileOld->getFileName());
+
+			if(!$advert->getImageDesktop() && $imgDesktopOld) $advert->setImageDesktop($imgDesktopOld->getFileName());
+			if(!$advert->getImageTablet() && $imgTabletOld) $advert->setImageTablet($imgTabletOld->getFileName());
+			if(!$advert->getImageMobile() && $imgMobileOld) $advert->setImageMobile($imgMobileOld->getFileName());
 
 			$this->getDoctrine()->getManager()->flush();
 

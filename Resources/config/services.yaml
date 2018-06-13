@@ -1,13 +1,14 @@
 services:
     Octopouce\AdvertisingBundle\:
-        resource: '../../{Controller,Repository,Utils,Utils/Statistics}'
+        resource: '../../*'
+        exclude: '../../{DependencyInjection,Entity,Resources}'
         autowire: true
         autoconfigure: true
         public: false
 
     Octopouce\AdvertisingBundle\Utils\FileUploader:
         arguments:
-            $targetDirectory: 'uploads/adv'
+            $targetDirectory: '/uploads/adv'
 
     Octopouce\AdvertisingBundle\EventListener\AdvertUploadListener:
         autowire: true
@@ -15,3 +16,8 @@ services:
             - { name: doctrine.event_listener, event: postPersist }
             - { name: doctrine.event_listener, event: preUpdate }
             - { name: doctrine.event_listener, event: postLoad }
+
+    Octopouce\AdvertisingBundle\EventListener\AdvertStatListener:
+        autowire: true
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }

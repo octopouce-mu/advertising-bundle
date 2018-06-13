@@ -32,14 +32,14 @@ class Adzone
 	/**
 	 * @var int
 	 *
-	 * @ORM\Column(name="height", type="integer")
+	 * @ORM\Column(name="height", type="integer", nullable=true)
 	 */
 	private $height;
 
 	/**
 	 * @var int
 	 *
-	 * @ORM\Column(name="width", type="integer")
+	 * @ORM\Column(name="width", type="integer", nullable=true)
 	 */
 	private $width;
 

@@ -14,16 +14,21 @@ class AdvertRepository extends ServiceEntityRepository
 		parent::__construct($registry, Advert::class);
 	}
 
-	public function findByActive($active = true, $sorts = null, $limit = null){
+	public function findByActive($active = true, $sorts = null, $limit = null, $adzone = null){
 		$qb = $this->createQueryBuilder('a')
 		           ->leftJoin('a.campaign', 'c');
 
 		if($active){
-			$qb->where('c.endDate > :now')
-			   ->setParameter('now', new \DateTime());
+			$qb->where('c.endDate > :now');
 		}else{
-			$qb->where('c.endDate <= :now')
-			   ->setParameter('now', new \DateTime());
+			$qb->where('c.endDate <= :now');
+		}
+	    $qb->setParameter('now', new \DateTime());
+
+		if($adzone){
+			$qb->leftJoin('a.adzones', 'adz')
+			   ->andWhere('adz.id = :adzone')
+			   ->setParameter('adzone', $adzone->getId());
 		}
 
 

@@ -24,8 +24,12 @@ class AdzoneType extends AbstractType
 		$builder
 			->add('name', TextType::class)
 
-			->add('width', IntegerType::class)
-			->add('height', IntegerType::class)
+			->add('width', IntegerType::class, [
+				'required' => false
+			])
+			->add('height', IntegerType::class, [
+				'required' => false
+			])
 
 			->add('pages', EntityType::class,[
 				'multiple' => true,

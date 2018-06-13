@@ -1,3 +1,8 @@
+octopouce_advertising:
+    resource: '../../Controller'
+    type: annotation
+    prefix: /advertising
+
 octopouce_advertising_admin:
     resource: '../../Controller/Admin'
     type: annotation

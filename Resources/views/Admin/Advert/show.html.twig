@@ -35,7 +35,7 @@
                         <div class="content">
                             {{ adzone.stats.clicks }} clicks <br>
                             {{ adzone.stats.impressions }} impressions <br>
-                            {{ (adzone.stats.clicks / 100) * adzone.stats.impressions }}% CTR
+                            {{ (adzone.stats.clicks * 100) / adzone.stats.impressions }}% CTR
                         </div>
                     </div>
                 </div>
