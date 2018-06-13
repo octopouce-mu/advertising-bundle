@@ -13,6 +13,7 @@ use Octopouce\AdvertisingBundle\Entity\Adzone;
 use Octopouce\AdvertisingBundle\Entity\Statistic\View;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class AdvertExtension extends AbstractExtension {
@@ -47,7 +48,24 @@ class AdvertExtension extends AbstractExtension {
 		];
 	}
 
-	public function showAdzone($adzoneName)
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getFilters(): array
+	{
+		return [
+			new TwigFilter('class', [$this, 'addClass']),
+		];
+	}
+
+	/**
+	 * @param $adzoneName
+	 * @param bool $html
+	 * @param array $attr
+	 *
+	 * @return array|string
+	 */
+	public function showAdzone($adzoneName, $html = false, $attr = [])
 	{
 
 		$route = $this->request->getCurrentRequest()->get('_route');
@@ -55,15 +73,40 @@ class AdvertExtension extends AbstractExtension {
 
 		$adzone = $this->em->getRepository(Adzone::class)->findOneByPageByAdzone($route, $adzoneName);
 		if(!$adzone){
-			return ['adzone' => null, 'adverts' => []];
+			$res = ['adzone' => null, 'adverts' => []];
 		}
 
 		$adverts = $this->em->getRepository(Advert::class)->findByActive(true, null, null, $adzone);
 		if($adverts){
-			return ['adzone' => $adzone, 'adverts' => $adverts];
+			$res = ['adzone' => $adzone, 'adverts' => $adverts];
 		}else{
-			return ['adzone' => $adzone, 'adverts' => []];
+			$res = ['adzone' => $adzone, 'adverts' => []];
 		}
+
+		if(!$html) {
+			return $res;
+		}
+
+		if($res['adzone'] == null){
+			return '';
+		}
+
+		$html = '';
+
+		if(isset($attr['classLink'])) { $classLink = $attr['classLink']; } else { $classLink = ''; }
+		if(isset($attr['classImg'])) { $classImg = $attr['classImg']; } else { $classImg = ''; }
+
+		if(count($adverts) > 0){
+			foreach ($adverts as $advert){
+				$html .= '<a href="'.$advert->getLink().'" target="_blank" class="advocto adzone'.$adzone->getId().' advert'.$advert->getId().' '.$classLink.'">
+				             <img src="/'.$advert->getImageDesktop()->getPathname().'" alt="" class="add200 '.$classImg.'">
+				         </a>';
+			}
+		}else {
+			$html .= '<span class="advocto adzone'.$adzone->getId().'"></span>';
+		}
+
+		return $html;
 
 	}
 }

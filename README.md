@@ -34,3 +34,21 @@ Now that you have activated and configured the bundle, all that is left to do is
 _octopouce_advertising:
     resource: "@OctopouceAdvertisingBundle/Resources/config/routing.yaml"
 ```
+
+### Step 4: Publish the Assets
+Now that you have activated and configured the bundle, all that is left to do is import the routing files.
+```js
+php bin/console assets:install --symlink
+```
+
+### Step 5: Add adzone in page
+Array Twig Exemple : 
+```js
+{{ adzone("Exemple") }}
+```
+
+HTML Exemple : 
+```js
+{{ adzone("Exemple", true)|raw }}
+```
+
