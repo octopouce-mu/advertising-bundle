@@ -174,7 +174,7 @@ class Advert
 		$clicks = $this->getStatsClick();
 
 		foreach ($clicks as $click){
-			$total += $click->getClick();
+			$total += $click->getClicks();
 		}
 
 		return $total;

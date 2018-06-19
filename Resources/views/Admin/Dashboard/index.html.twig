@@ -10,7 +10,7 @@
             </div>
         </div>
         {% if stats is defined and stats %}
-            {% include '@OctopouceAdvertising/Admin/Common/statistics-day.html.twig' with {'clicks': 0, 'impressions' : 0, 'today':true} %}
+            {% include '@OctopouceAdvertising/Admin/Common/statistics-day.html.twig' with {'clicks': stats.clicks, 'impressions' : stats.impressions, 'today':true} %}
         {% endif %}
         {% if adzones %}
             <div class="row">

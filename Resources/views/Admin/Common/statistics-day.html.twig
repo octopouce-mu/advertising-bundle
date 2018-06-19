@@ -19,7 +19,11 @@
         <div class="box">
             <div class="title">CTR</div>
             <div class="content">
-                {{ (clicks * 100) / impressions }}%
+                {% if impressions %}
+                    {{ (clicks * 100) / impressions }}%
+                {% else %}
+                    -
+                {% endif %}
             </div>
         </div>
     </div>
