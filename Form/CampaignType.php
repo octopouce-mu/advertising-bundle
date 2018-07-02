@@ -7,7 +7,7 @@
 namespace Octopouce\AdvertisingBundle\Form;
 
 use Octopouce\AdvertisingBundle\Entity\Campaign;
-use Octopouce\AdvertisingBundle\Form\Type\DateTimePickerType;
+use Octopouce\AdminBundle\Form\Type\DateTimePickerType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;

@@ -36,7 +36,7 @@
                             {{ adzone.stats.clicks }} clicks <br>
                             {{ adzone.stats.impressions }} impressions <br>
                             {% if adzone.stats.impressions %}
-                                {{ (adzone.stats.clicks * 100) / adzone.stats.impressions }}% CTR
+                                {{ ((adzone.stats.clicks * 100) / adzone.stats.impressions)|round(2) }}% CTR
                             {% else %}
                                 -
                             {% endif %}

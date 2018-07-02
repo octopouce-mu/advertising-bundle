@@ -15,7 +15,6 @@ class ViewRepository extends ServiceEntityRepository
 
 	public function findByAdverts(array $adverts, $start = null, $end = null, $adzone = null){
 		$qb = $this->createQueryBuilder('v')
-					->select('SUM(v.views)')
 		           ->leftJoin('v.advert', 'a');
 
 		foreach ($adverts as $advert){
@@ -38,7 +37,7 @@ class ViewRepository extends ServiceEntityRepository
 			   ->setParameter('adzone', $adzone);
 		}
 
-		return $qb->getQuery()->getSingleScalarResult();
+		return $qb->getQuery()->getResult();
 	}
 
 	public function findByAdzone($adzone, $start = null, $end = null){

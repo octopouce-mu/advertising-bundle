@@ -1,0 +1,22 @@
+header.sidebar.left.nav.dashboard: <i class="fab fa-adversal"></i><span class="label-menu">Dashboard</span>
+header.sidebar.left.nav.campaign: <i class="far fa-calendar-alt"></i><span class="label-menu">Campaigns</span>
+header.sidebar.left.nav.adzone: <i class="far fa-window-maximize"></i><span class="label-menu">Adzones</span>
+header.sidebar.left.nav.page: <i class="far fa-file"></i><span class="label-menu">Pages</span>
+
+daterangepicker.ranges.today: Today
+daterangepicker.ranges.yesterday: Yesterday
+daterangepicker.ranges.last_days: Last %day% days
+daterangepicker.ranges.this_month: This month
+daterangepicker.ranges.last_month: Last month
+
+campaign: Campaign
+clicks: Clicks
+impressions: Impressions
+views: Views
+stat_of_day: Statistic of day
+by_popularity: by popularity
+end_to: End to
+manage: Manage
+enable: enable
+ctr: CTR
+

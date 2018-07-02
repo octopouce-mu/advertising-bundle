@@ -8,7 +8,7 @@ services:
 
     Octopouce\AdvertisingBundle\Utils\FileUploader:
         arguments:
-            $targetDirectory: '/uploads/adv'
+            $targetDirectory: '/uploads'
 
     Octopouce\AdvertisingBundle\EventListener\AdvertUploadListener:
         autowire: true

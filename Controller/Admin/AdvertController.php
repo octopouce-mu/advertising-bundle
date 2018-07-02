@@ -92,18 +92,19 @@ class AdvertController extends Controller
 		$campaign = $em->getRepository(Campaign::class)->find($campaignId);
 
 		$adzoneId = $request->get('adzone');
-		$adzone = $em->getRepository(Adzone::class)->find($adzoneId);
+		$adzone = $adzoneId ? $em->getRepository(Adzone::class)->find($adzoneId) : null;
 
 		$advert = new Advert();
 		$advert->setCampaign($campaign);
-		$advert->addAdzone($adzone);
+
+		if($adzone) $advert->addAdzone($adzone);
 
 		$form = $this->createForm(AdvertType::class, $advert);
 
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
 
-			$adzone->addAdvert($advert);
+			if($adzone) $adzone->addAdvert($advert);
 
 			$em->persist($advert);
 			$em->flush();

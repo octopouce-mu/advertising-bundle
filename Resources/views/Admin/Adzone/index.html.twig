@@ -22,6 +22,7 @@
                             <th>Views</th>
                             <th>Clicks</th>
                             <th>CTR</th>
+                            <th>Twig</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -35,7 +36,7 @@
                                 <td>
                                     {% if adzone.pages %}
                                         {% for page in adzone.pages %}
-                                            <span class="chip blue">{{ page.name }}</span>
+                                            <span class="chip blue" title="Path: {{ page.path }}">{{ page.name }}</span>
                                         {% endfor %}
                                     {% endif %}
                                 </td>
@@ -43,11 +44,12 @@
                                 <td>{{ adzone.totalClicks }}</td>
                                 <td>
                                     {% if adzone.totalViews %}
-                                        {{ (adzone.totalClicks * 100) / adzone.totalViews }}%
+                                        {{ ((adzone.totalClicks * 100) / adzone.totalViews)|round(2) }}%
                                     {% else %}
                                         -
                                     {% endif %}
                                 </td>
+                                <td>{% verbatim %}{{ adzone('{% endverbatim %}{{ adzone.name }}{% verbatim %}', true, {'classLink':'adv-link', 'classImg':'adv-img')|raw }}{% endverbatim %}</td>
                                 <td>
                                     <a href="{{ path('octopouce_advertising_admin_adzone_edit', {'adzone':adzone.id}) }}" class="waves-effect waves-light btn orange"><i class="fas fa-pencil-alt"></i></a>
                                     <a href="{{ path('octopouce_advertising_admin_adzone_delete', {'adzone':adzone.id}) }}" class="waves-effect waves-light btn red"><i class="fas fa-times"></i></a>

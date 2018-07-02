@@ -1,5 +1,7 @@
 {% extends '@OctopouceAdvertising/Admin/layout.html.twig' %}
 
+{% trans_default_domain 'advertising' %}
+
 {% block title %}Advertising - {{ parent() }}{% endblock %}
 
 {% block main %}
@@ -14,14 +16,14 @@
         {% endif %}
         {% if adzones %}
             <div class="row">
-                <div class="col s12">Adzones (by popularity)</div>
+                <div class="col s12">Adzones ({{ 'by_popularity'|trans }})</div>
 
                 {% for adzone in adzones|slice(0, 6) %}
                     <div class="col s6 m6 l2">
                         <div class="box">
                             <div class="title">{{ adzone.name }}</div>
                             <div class="content">
-                                {{ adzone.totalViews }} view{% if adzone.totalViews %}s{% endif %} | {{ adzone.totalClicks }} click{% if adzone.totalClicks %}s{% endif %}
+                                {{ adzone.totalViews }} {{ 'views'|trans }} | {{ adzone.totalClicks }} {{ 'clicks'|trans }}
                                 <br>
                                 Pages : {% for page in adzone.pages %}{{ page.name }}{% if not loop.last %}, {% endif %}{% endfor %}
                             </div>
@@ -32,17 +34,17 @@
         {% endif %}
         {% if adverts %}
             <div class="row">
-                <div class="col s12">Adverts actifs</div>
+                <div class="col s12">Adverts {{ 'enable'|trans }}</div>
 
                 {% for advert in adverts %}
                     <div class="col s6 m6 l2">
                         <div class="box">
-                            <div class="bg-img" style="background-image: url('{{ asset(advert.imageDesktop.pathname) }}');"></div>
+                            <div class="bg-img" {% if advert.imageDesktop %}style="background-image: url('{{ asset(advert.imageDesktop.pathname) }}');"{% endif %}></div>
                             <a href="{{ path('octopouce_advertising_admin_advert_show', {'advert':advert.id}) }}" class="title">{{ advert.name }}</a>
                             <div class="content">
-                                Campaign : <a href="{{ path('octopouce_advertising_admin_campaign_show', {'campaign':advert.campaign.id}) }}">{{ advert.campaign.name }}</a><br>
-                                End to {{ advert.campaign.endDate|date('d/m/y') }} <br>
-                                {{ advert.totalViews }} view{% if advert.totalViews %}s{% endif %} | {{ advert.totalClicks }} click{% if advert.totalClicks %}s{% endif %}
+                                {{ 'campaign'|trans }} : <a href="{{ path('octopouce_advertising_admin_campaign_show', {'campaign':advert.campaign.id}) }}">{{ advert.campaign.name }}</a><br>
+                                {{ 'end_to'|trans }} {{ advert.campaign.endDate|date('d/m/y') }} <br>
+                                {{ advert.totalViews }} {{ 'views'|trans }} | {{ advert.totalClicks }} {{ 'clicks'|trans }}
                             </div>
                         </div>
                     </div>
@@ -52,17 +54,17 @@
         <div class="row">
             <div class="col s4">
                 <div class="box">
-                    <a class="title center" href="{{ path('octopouce_advertising_admin_campaign_index') }}">Manage campaigns</a>
+                    <a class="title center" href="{{ path('octopouce_advertising_admin_campaign_index') }}">{{ 'manage'|trans }} {{ 'campaign'|trans }}</a>
                 </div>
             </div>
             <div class="col s4">
                 <div class="box">
-                    <a class="title center" href="{{ path('octopouce_advertising_admin_adzone_index') }}">Manage adzones</a>
+                    <a class="title center" href="{{ path('octopouce_advertising_admin_adzone_index') }}">{{ 'manage'|trans }} adzones</a>
                 </div>
             </div>
             <div class="col s4">
                 <div class="box">
-                    <a class="title center" href="{{ path('octopouce_advertising_admin_page_index') }}">Manage pages</a>
+                    <a class="title center" href="{{ path('octopouce_advertising_admin_page_index') }}">{{ 'manage'|trans }} pages</a>
                 </div>
             </div>
         </div>

@@ -52,14 +52,14 @@ class AdvertStatistics {
 		$impressions = $this->getImpressions();
 		$clicks = $this->getClicks();
 
-		return ['impressions' => $impressions, 'clicks' => $clicks];
+		return ['impressions' => $this->getTotal($impressions), 'clicks' => $this->getTotal($clicks)];
 	}
 
 	public function byDate($start = null, $end = null) {
 		$impressions = $this->getImpressions($start, $end);
 		$clicks = $this->getClicks($start, $end);
 
-		return ['impressions' => $impressions, 'clicks' => $clicks];
+		return ['impressions' => $this->getTotal($impressions), 'clicks' => $this->getTotal($clicks), 'days'=>['impressions'=>$impressions, 'clicks'=>$clicks]];
 	}
 
 	public function getImpressions($start = null, $end = null, $adzone = null){
@@ -69,7 +69,7 @@ class AdvertStatistics {
 
 		$impressions = $this->em->getRepository(View::class)->findByAdverts($this->getAdverts(), $start, $end, $adzone);
 
-		return $impressions ? $impressions : 0;
+		return $impressions;
 	}
 
 	public function getClicks($start = null, $end = null, $adzone = null){
@@ -79,9 +79,21 @@ class AdvertStatistics {
 
 		$clicks = $this->em->getRepository(Click::class)->findByAdverts($this->getAdverts(), $start, $end, $adzone);
 
-		return $clicks ? $clicks : 0;
+		return $clicks;
 	}
 
+	public function getTotal($entities){
+		$cpt = 0;
+
+		foreach ($entities as $entity){
+			if($entity instanceof View){
+				$cpt += $entity->getViews();
+			}elseif($entity instanceof Click){
+				$cpt += $entity->getClicks();
+			}
+		}
+		return $cpt;
+	}
 
 
 	/**

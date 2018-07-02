@@ -18,6 +18,16 @@
         </div>
         {% if stats %}
             {% include '@OctopouceAdvertising/Admin/Common/statistics-day.html.twig' with {'clicks': stats.clicks, 'impressions' : stats.impressions} %}
+            <div class="row">
+                <div class="col s12">
+                    <div class="box">
+                        <div class="title">Statistiques par jour</div>
+                        <div class="content">
+                            <canvas id="chart-stats" width="700" height="100"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
         {% endif %}
         {% if pages %}
             <div class="row">
@@ -32,10 +42,11 @@
                                     {% for advert in adzone.adverts %}
                                         {% if advert.campaign == campaign %}
                                             <div class="box">
-                                                <div class="bg-img" style="background-image: url('{{ asset(advert.imageDesktop.pathname) }}');"></div>
+                                                <div class="bg-img" {% if advert.imageDesktop %}style="background-image: url('{{ asset(advert.imageDesktop.pathname) }}');"{% endif %}></div>
                                                 <div class="content">
                                                     <b><a href="{{ path('octopouce_advertising_admin_advert_show', {'advert':advert.id}|merge(app.request.query)) }}">{{ advert.name }}</a></b>
-                                                    <span class="right"><a href="{{ path('octopouce_advertising_admin_advert_unlink', {'advert': advert.id, 'adzone':adzone.id}) }}" onclick="return confirm('Are you sure to unlink advert and adzone ?');"><i class="fas fa-unlink"></i></a></span><br>
+                                                    <span class="right"><a href="{{ path('octopouce_advertising_admin_advert_unlink', {'advert': advert.id, 'adzone':adzone.id}) }}" onclick="return confirm('Are you sure to unlink advert and adzone ?');"><i class="fas fa-unlink"></i></a></span>
+                                                    <br>
                                                     Adzone : {{ adzone.name }}
                                                 </div>
                                             </div>
@@ -43,7 +54,7 @@
                                         {% endif %}
                                     {% endfor %}
                                     {% if not advertInAdzone and campaign.isActive %}
-                                        <div class="box">
+                                        <div class="box adzone">
                                             <div class="content">
                                                 <a href="{{ path('octopouce_advertising_admin_advert_create', {'campaign':campaign.id, 'adzone':adzone.id}) }}">Add advert in the adzone "{{ adzone.name }}"</a>
                                             </div>
@@ -57,4 +68,47 @@
             </div>
         {% endif %}
     </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        var days = [{% for impression in stats.days.impressions %}'{{ impression.date|date('d/m') }}',{% endfor %}];
+        var impressions = [{% for impression in stats.days.impressions %}'{{ impression.views }}',{% endfor %}];
+
+
+        var clicks = [
+            {% for impression in stats.days.impressions %}
+                {% set clickNumber = 'NaN' %}
+                {% for click in stats.days.clicks %}
+                    {% if click.date == impression.date %}
+                        {% set clickNumber = click.clicks %}
+                    {% endif %}
+                {% endfor %}
+                '{{ clickNumber }}',
+            {% endfor %}
+        ];
+
+        new Chart(document.getElementById("chart-stats"), {
+            "type": "line",
+            "data": {
+                "labels": days,
+                "datasets": [{
+                    "label": "Impressions",
+                    "data": impressions,
+                    "fill": false,
+                    "borderColor": "rgb(75, 192, 192)",
+                    "lineTension": 0.1
+                },{
+                    "label": "Clicks",
+                    "data": clicks,
+                    "fill": false,
+                    "borderColor": "rgb(255, 99, 132)",
+                    "lineTension": 0.1
+                }]
+            },
+            "options": {}
+        });
+    </script>
+
 {% endblock %}

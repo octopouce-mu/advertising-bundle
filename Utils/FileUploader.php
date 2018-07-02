@@ -6,21 +6,21 @@
 
 namespace Octopouce\AdvertisingBundle\Utils;
 
+
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileUploader {
-
 	private $targetDirectory;
 
-	public function __construct(string $targetDirectory)
+	public function __construct($targetDirectory)
 	{
 		$this->targetDirectory = $targetDirectory;
 	}
 
 	public function upload(UploadedFile $file, $path = null)
 	{
+		$file->move($path ? $path : $this->getTargetDirectory(), $file->getClientOriginalName());
 
-		$file->move(str_replace('//', '/', $this->getTargetDirectory().'/'.$path), $file->getClientOriginalName());
 		return $file->getClientOriginalName();
 	}
 

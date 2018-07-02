@@ -50,4 +50,9 @@ class AdzoneType extends AbstractType
 			'data_class' => Adzone::class
 		]);
 	}
+
+	public function getBlockPrefix()
+	{
+		return "zone";
+	}
 }

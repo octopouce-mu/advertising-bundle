@@ -15,7 +15,6 @@ class ClickRepository extends ServiceEntityRepository
 
 	public function findByAdverts(array $adverts, $start = null, $end = null, $adzone = null){
 		$qb = $this->createQueryBuilder('c')
-					->select('SUM(c.clicks)')
 		           ->leftJoin('c.advert', 'a');
 
 		foreach ($adverts as $advert){
@@ -38,7 +37,7 @@ class ClickRepository extends ServiceEntityRepository
 			   ->setParameter('adzone', $adzone);
 		}
 
-		return $qb->getQuery()->getSingleScalarResult();
+		return $qb->getQuery()->getResult();
 	}
 
 	public function findByAdzone($adzone, $start = null, $end = null){
