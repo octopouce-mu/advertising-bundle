@@ -6,7 +6,7 @@
     {% form_theme form '@OctopouceAdmin/Form/layout.html.twig' %}
 {% endif %}
 
-{% block siderbar_left_nav %}
+{% block sidebar_left_nav %}
     {% if is_granted('ROLE_ADMIN') %}
         {{ parent() }}
     {% else %}
