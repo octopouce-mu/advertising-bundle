@@ -12,9 +12,11 @@ use Octopouce\AdvertisingBundle\Form\AdzoneType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/adzone")
+ * @IsGranted("ROLE_ADVERT")
  */
 class AdzoneController extends Controller
 {

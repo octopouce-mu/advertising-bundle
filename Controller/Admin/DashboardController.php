@@ -13,12 +13,13 @@ use Octopouce\AdvertisingBundle\Utils\Statistics\CampaignStatistics;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class DashboardController extends Controller
 {
 	/**
 	 * @Route("/", name="octopouce_advertising_admin_dashboard_index")
+	 * @IsGranted("ROLE_ADVERT")
 	 */
 	public function index(CampaignStatistics $campaignStatistics): Response
 	{
