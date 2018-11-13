@@ -6,35 +6,6 @@
     {% form_theme form '@OctopouceAdmin/Form/layout.html.twig' %}
 {% endif %}
 
-{% block sidebar_left_nav %}
-    {% if is_granted('ROLE_ADMIN') %}
-        {{ parent() }}
-    {% else %}
-        <ul>
-            <li class="current">
-                <a href="{{ path('octopouce_advertising_admin_dashboard_index') }}">
-                    {{ 'header.sidebar.left.nav.dashboard'|trans|raw }}
-                </a>
-            </li>
-            <li>
-                <a href="{{ path('octopouce_advertising_admin_campaign_index') }}">
-                    {{ 'header.sidebar.left.nav.campaign'|trans|raw }}
-                </a>
-            </li>
-            <li>
-                <a href="{{ path('octopouce_advertising_admin_adzone_index') }}">
-                    {{ 'header.sidebar.left.nav.adzone'|trans|raw }}
-                </a>
-            </li>
-            <li>
-                <a href="{{ path('octopouce_advertising_admin_page_index') }}">
-                    {{ 'header.sidebar.left.nav.page'|trans|raw }}
-                </a>
-            </li>
-        </ul>
-    {% endif %}
-{% endblock %}
-
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('bundles/octopouceadvertising/css/style.css') }}">
