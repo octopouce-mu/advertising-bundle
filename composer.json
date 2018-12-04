@@ -20,5 +20,10 @@
   },
   "autoload": {
     "psr-4": { "Octopouce\\AdvertisingBundle\\": "" }
+  },
+  "extra": {
+    "symfony": {
+      "allow-contrib": "true"
+    }
   }
 }
