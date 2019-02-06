@@ -96,10 +96,26 @@ class AdvertExtension extends AbstractExtension {
 		if(isset($attr['classLink'])) { $classLink = $attr['classLink']; } else { $classLink = ''; }
 		if(isset($attr['classImg'])) { $classImg = $attr['classImg']; } else { $classImg = ''; }
 
+		if(isset($attr['width'])) {
+			$width = $attr['width'];
+		} elseif($adzone->getWidth()) {
+			$width = $adzone->getWidth();
+		} else {
+			$width = '';
+		}
+
+		if(isset($attr['height'])) {
+			$height = $attr['height'];
+		} elseif($adzone->getHeight()) {
+			$height = $adzone->getHeight();
+		} else {
+			$height = '';
+		}
+
 		if(count($adverts) > 0){
 			foreach ($adverts as $advert){
 				$html .= '<a href="'.$advert->getLink().'" target="_blank" class="advocto adzone'.$adzone->getId().' advert'.$advert->getId().' '.$classLink.'">
-				             <img src="/'.$advert->getImageDesktop()->getPathname().'" alt="" class="add200 '.$classImg.'">
+				             <img src="/'.$advert->getImageDesktop()->getPathname().'" alt="'.$advert->getName().'" class="'.$classImg.'" width="'.$width.'" height="'.$height.'">
 				         </a>';
 			}
 		}else {
