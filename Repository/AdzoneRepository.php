@@ -18,7 +18,7 @@ class AdzoneRepository extends ServiceEntityRepository
 		$qb = $this->createQueryBuilder('a');
 		$qb->leftJoin('a.pages', 'p');
 
-		$qb->where('p.path LIKE :route')
+		$qb->where('p.path LIKE :route OR p is NULL')
 		   ->setParameter('route', $route)
 		   ->andWhere('a.name LIKE :adzoneName')
 		   ->setParameter('adzoneName', $adzoneName);
