@@ -21,8 +21,5 @@ class OctopouceAdvertisingExtension extends Extension
 
 		$configuration = new Configuration();
 		$config = $this->processConfiguration($configuration, $configs);
-
-		$definition = $container->getDefinition('Octopouce\AdvertisingBundle\Utils\FileUploader');
-		$definition->replaceArgument('$targetDirectory', $config['upload_path']);
 	}
 }
