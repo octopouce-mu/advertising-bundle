@@ -7,11 +7,8 @@
 namespace Octopouce\AdvertisingBundle\EventListener;
 
 use Octopouce\AdvertisingBundle\Entity\Advert;
-use Octopouce\AdvertisingBundle\Utils\FileUploader;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\ORM\Event\PreUpdateEventArgs;
 
 class AdvertUploadListener {
 
