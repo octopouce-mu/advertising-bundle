@@ -38,4 +38,14 @@ class AdzoneRepository extends ServiceEntityRepository
 		return $qb->getQuery()->getResult();
 	}
 
+	public function findByNotPage(){
+		$qb = $this->createQueryBuilder('a');
+		$qb->leftJoin('a.pages', 'p');
+
+		$qb->where('p.id IS NULL');
+
+
+		return $qb->getQuery()->getResult();
+	}
+
 }

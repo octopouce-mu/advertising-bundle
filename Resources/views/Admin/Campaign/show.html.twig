@@ -29,6 +29,38 @@
                 </div>
             </div>
         {% endif %}
+        <div class="row">
+            <div class="col s12">All pages with adzones and adverts</div>
+            {% for adzone in adzones %}
+                <div class="col s6 m6 l2">
+                    {% set advertInAdzone = false %}
+                    {% for advert in adzone.adverts %}
+                        {% if advert.campaign == campaign %}
+                            <div class="box">
+                                <div class="bg-img" {% if advert.imageDesktop %}style="background-image: url('{{ asset(advert.imageDesktop.pathname) }}');"{% endif %}></div>
+                                <div class="title">{{ adzone.name }}</div>
+                                <div class="content">
+                                    <b><a href="{{ path('octopouce_advertising_admin_advert_show', {'advert':advert.id}|merge(app.request.query)) }}">{{ advert.name }}</a></b>
+                                    <span class="right"><a href="{{ path('octopouce_advertising_admin_advert_unlink', {'advert': advert.id, 'adzone':adzone.id}) }}" onclick="return confirm('Are you sure to unlink advert and adzone ?');"><i class="fas fa-unlink"></i></a></span>
+                                    <br>
+                                    Adzone : {{ adzone.name }}
+                                </div>
+                            </div>
+                            {% set advertInAdzone = true %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if not advertInAdzone and campaign.isActive %}
+                        <div class="box adzone">
+                            <div class="title">{{ adzone.name }}</div>
+
+                            <div class="content">
+                                <a href="{{ path('octopouce_advertising_admin_advert_create', {'campaign':campaign.id, 'adzone':adzone.id}) }}">Add advert in the adzone "{{ adzone.name }}"</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
         {% if pages %}
             <div class="row">
                 <div class="col s12">Pages with adzones and adverts</div>
@@ -72,43 +104,44 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script>
-        var days = [{% for impression in stats.days.impressions %}'{{ impression.date|date('d/m') }}',{% endfor %}];
-        var impressions = [{% for impression in stats.days.impressions %}'{{ impression.views }}',{% endfor %}];
+    {% if stats %}
+        <script>
+            var days = [{% for impression in stats.days.impressions %}'{{ impression.date|date('d/m') }}',{% endfor %}];
+            var impressions = [{% for impression in stats.days.impressions %}'{{ impression.views }}',{% endfor %}];
 
 
-        var clicks = [
-            {% for impression in stats.days.impressions %}
+            var clicks = [
+                {% for impression in stats.days.impressions %}
                 {% set clickNumber = 'NaN' %}
                 {% for click in stats.days.clicks %}
-                    {% if click.date == impression.date %}
-                        {% set clickNumber = click.clicks %}
-                    {% endif %}
+                {% if click.date == impression.date %}
+                {% set clickNumber = click.clicks %}
+                {% endif %}
                 {% endfor %}
                 '{{ clickNumber }}',
-            {% endfor %}
-        ];
+                {% endfor %}
+            ];
 
-        new Chart(document.getElementById("chart-stats"), {
-            "type": "line",
-            "data": {
-                "labels": days,
-                "datasets": [{
-                    "label": "Impressions",
-                    "data": impressions,
-                    "fill": false,
-                    "borderColor": "rgb(75, 192, 192)",
-                    "lineTension": 0.1
-                },{
-                    "label": "Clicks",
-                    "data": clicks,
-                    "fill": false,
-                    "borderColor": "rgb(255, 99, 132)",
-                    "lineTension": 0.1
-                }]
-            },
-            "options": {}
-        });
-    </script>
-
+            new Chart(document.getElementById("chart-stats"), {
+                "type": "line",
+                "data": {
+                    "labels": days,
+                    "datasets": [{
+                        "label": "Impressions",
+                        "data": impressions,
+                        "fill": false,
+                        "borderColor": "rgb(75, 192, 192)",
+                        "lineTension": 0.1
+                    },{
+                        "label": "Clicks",
+                        "data": clicks,
+                        "fill": false,
+                        "borderColor": "rgb(255, 99, 132)",
+                        "lineTension": 0.1
+                    }]
+                },
+                "options": {}
+            });
+        </script>
+    {% endif %}
 {% endblock %}

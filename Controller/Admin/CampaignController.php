@@ -6,6 +6,7 @@
 
 namespace Octopouce\AdvertisingBundle\Controller\Admin;
 
+use Octopouce\AdvertisingBundle\Entity\Adzone;
 use Octopouce\AdvertisingBundle\Entity\Campaign;
 use Octopouce\AdvertisingBundle\Entity\Page;
 use Octopouce\AdvertisingBundle\Form\CampaignType;
@@ -66,10 +67,12 @@ class CampaignController extends Controller
 
 
 		$pages = $em->getRepository(Page::class)->findAll();
+		$adzones = $em->getRepository(Adzone::class)->findByNotPage();
 
 		return $this->render('@OctopouceAdvertising/Admin/Campaign/show.html.twig', [
 			'campaign' => $campaign,
 			'pages'    => $pages,
+			'adzones' => $adzones,
 			'stats' => isset($stats) ? $stats : null
 		]);
 	}

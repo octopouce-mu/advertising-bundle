@@ -6,12 +6,15 @@
 
 namespace Octopouce\AdvertisingBundle\Controller\Admin;
 
+use Octopouce\AdminBundle\Utils\FileUploader;
 use Octopouce\AdvertisingBundle\Entity\Advert;
 use Octopouce\AdvertisingBundle\Entity\Adzone;
 use Octopouce\AdvertisingBundle\Entity\Campaign;
 use Octopouce\AdvertisingBundle\Form\AdvertType;
 use Octopouce\AdvertisingBundle\Utils\Statistics\AdvertStatistics;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,7 +24,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
  * @Route("/advert")
  * @IsGranted("ROLE_ADVERT")
  */
-class AdvertController extends Controller
+class AdvertController extends AbstractController
 {
 	/**
 	 * @Route("/", name="octopouce_advertising_admin_advert_index")
@@ -87,7 +90,7 @@ class AdvertController extends Controller
 	/**
 	 * @Route("/create", name="octopouce_advertising_admin_advert_create")
 	 */
-	public function create(Request $request) : Response {
+	public function create(Request $request, FileUploader $fileUploader) : Response {
 		$em = $this->getDoctrine()->getManager();
 
 		$campaignId = $request->get('campaign');
@@ -105,6 +108,21 @@ class AdvertController extends Controller
 
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
+
+			if($advert->getImageDesktop()) {
+				$nameImageDesktop = $fileUploader->upload($advert->getImageDesktop(), 'date', 'advert-'.$advert->getName());
+				$advert->setImageDesktop($nameImageDesktop);
+			}
+
+			if($advert->getImageTablet()) {
+				$nameImageTablet = $fileUploader->upload($advert->getImageTablet(), 'date', 'advert-'.$advert->getName().'-tablet');
+				$advert->setImageTablet($nameImageTablet);
+			}
+
+			if($advert->getImageMobile()) {
+				$nameImageMobile = $fileUploader->upload($advert->getImageMobile(), 'date', 'advert-'.$advert->getName().'-mobile');
+				$advert->setImageMobile($nameImageMobile);
+			}
 
 			if($adzone) $adzone->addAdvert($advert);
 
@@ -125,21 +143,46 @@ class AdvertController extends Controller
 	/**
 	 * @Route("/{advert}/edit", name="octopouce_advertising_admin_advert_edit")
 	 */
-	public function edit(Advert $advert, Request $request) : Response {
+	public function edit(Advert $advert, Request $request, FileUploader $fileUploader) : Response {
 
 		$form = $this->createForm(AdvertType::class, $advert);
 
-		$imgDesktopOld = $advert->getImageDesktop();
-		$imgTabletOld = $advert->getImageTablet();
-		$imgMobileOld = $advert->getImageMobile();
+		$oldImageDesktop = $advert->getImageDesktop();
+		$oldImageTablet = $advert->getImageTablet();
+		$oldImageMobile = $advert->getImageMobile();
 
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
 
 
-			if(!$advert->getImageDesktop() && $imgDesktopOld) $advert->setImageDesktop($imgDesktopOld->getFileName());
-			if(!$advert->getImageTablet() && $imgTabletOld) $advert->setImageTablet($imgTabletOld->getFileName());
-			if(!$advert->getImageMobile() && $imgMobileOld) $advert->setImageMobile($imgMobileOld->getFileName());
+			$fileSystem = new Filesystem();
+
+			if($advert->getImageDesktop()) {
+				if($oldImageDesktop instanceof File) $fileSystem->remove($oldImageDesktop);
+
+				$nameImageDesktop = $fileUploader->upload($advert->getImageDesktop(), 'date', 'advert-'.$advert->getName());
+				$advert->setImageDesktop($nameImageDesktop);
+			} else {
+				$advert->setImageDesktop($oldImageDesktop instanceof File ? $oldImageDesktop->getPathName() : $oldImageDesktop);
+			}
+
+			if($advert->getImageTablet()) {
+				if($oldImageTablet instanceof File) $fileSystem->remove($oldImageTablet);
+
+				$nameImageTablet = $fileUploader->upload($advert->getImageTablet(), 'date', 'advert-'.$advert->getName().'-tablet');
+				$advert->setImageTablet($nameImageTablet);
+			} else {
+				$advert->setImageTablet($oldImageTablet instanceof File ? $oldImageTablet->getPathName() : $oldImageTablet);
+			}
+
+			if($advert->getImageMobile()) {
+				if($oldImageMobile instanceof File) $fileSystem->remove($oldImageMobile);
+
+				$nameImageMobile = $fileUploader->upload($advert->getImageMobile(), 'date', 'advert-'.$advert->getName().'-mobile');
+				$advert->setImageMobile($nameImageMobile);
+			} else {
+				$advert->setImageMobile($oldImageMobile instanceof File ? $oldImageMobile->getPathName() : $oldImageMobile);
+			}
 
 			$this->getDoctrine()->getManager()->flush();
 
@@ -160,6 +203,20 @@ class AdvertController extends Controller
 	public function delete(Advert $advert) : Response {
 		$em = $this->getDoctrine()->getManager();
 		$campaignId = $advert->getCampaign()->getId();
+
+		$fileSystem = new Filesystem();
+		if($advert->getImageDesktop() instanceof File) {
+			$fileSystem->remove($advert->getImageDesktop()->getPathName());
+		}
+
+		if($advert->getImageTablet() instanceof File) {
+			$fileSystem->remove($advert->getImageTablet()->getPathName());
+		}
+
+		if($advert->getImageMobile() instanceof File) {
+			$fileSystem->remove($advert->getImageMobile()->getPathName());
+		}
+
 		$em->remove($advert);
 		$em->flush();
 

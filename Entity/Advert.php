@@ -37,21 +37,18 @@ class Advert
 	private $link;
 
 	/**
-	 * @var string
 	 *
 	 * @ORM\Column(name="image_desktop", type="string", length=255)
 	 */
 	private $imageDesktop;
 
 	/**
-	 * @var string
 	 *
 	 * @ORM\Column(name="image_tablet", type="string", length=255, nullable=true)
 	 */
 	private $imageTablet;
 
 	/**
-	 * @var string
 	 *
 	 * @ORM\Column(name="image_mobile", type="string", length=255, nullable=true)
 	 */
@@ -231,7 +228,6 @@ class Advert
 	/**
 	 * Get imageDesktop
 	 *
-	 * @return string
 	 */
 	public function getImageDesktop()
 	{
@@ -279,7 +275,6 @@ class Advert
 	/**
 	 * Get imageTablet
 	 *
-	 * @return string
 	 */
 	public function getImageTablet()
 	{
@@ -303,7 +298,6 @@ class Advert
 	/**
 	 * Get imageMobile
 	 *
-	 * @return string
 	 */
 	public function getImageMobile()
 	{
