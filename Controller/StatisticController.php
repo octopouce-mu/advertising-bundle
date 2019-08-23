@@ -74,7 +74,7 @@ class StatisticController extends Controller
 		$click = $em->getRepository(Click::class)->findOneBy(['adzone' => $adzoneId, 'advert' => $advertId, 'date' => new \DateTime()]);
 
 		if($click) {
-			$click->setClick($click->getClick() + 1);
+			$click->setClicks($click->getClicks() + 1);
 		}else{
 			$advert = $adzone['ad'] ? $em->getRepository(Advert::class)->find($advertId) : null;
 			$adzone = $em->getRepository(Adzone::class)->find($adzoneId);

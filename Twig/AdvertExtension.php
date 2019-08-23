@@ -114,9 +114,13 @@ class AdvertExtension extends AbstractExtension {
 
 		if(count($adverts) > 0){
 			foreach ($adverts as $advert){
-				$html .= '<a href="'.$advert->getLink().'" target="_blank" class="advocto adzone'.$adzone->getId().' advert'.$advert->getId().' '.$classLink.'">
-				             <img src="/'.$advert->getImageDesktop()->getPathname().'" alt="'.$advert->getName().'" class="'.$classImg.'" width="'.$width.'" height="'.$height.'">
-				         </a>';
+				$html .= '<div class="col advertisingImg">
+                            <p class="noMargin">
+                            <a href="'.$advert->getLink().'" target="_blank" class="advocto adzone'.$adzone->getId().' advert'.$advert->getId().' '.$classLink.'">
+				             <span class="desktopImg"><img src="/'.$advert->getImageDesktop()->getPathname().'" alt="'.$advert->getName().'" class="'.$classImg.'" width="'.$width.'" height="'.$height.'"></span>
+				             <span class="tabletImg d-none d-md-block scrollAnimElement" delay="0.2" distance="10" duration="1" anim="fadeInUp"><img src="/'.$advert->getImageTablet()->getPathname().'" alt="'.$advert->getName().'" class="'.$classImg.'" width="'.$width.'" height="'.$height.'"></span>
+                             <span class="mobileImg d-block d-md-none scrollAnimElement" delay="0.2" distance="10" duration="1" anim="fadeInUp"><img src="/'.$advert->getImageMobile()->getPathname().'" alt="'.$advert->getName().'" class="'.$classImg.'" width="'.$width.'" height="'.$height.'"></span>
+				         </a></p></div>';
 			}
 		}else {
 			$html .= '<span class="advocto adzone'.$adzone->getId().'"></span>';
